@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TowerTech — Assistência Técnica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+/* ===================== RESET & VARS ===================== */
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#c9991a;--gold2:#e6b020;--gold-dim:#c9991a22;--gold-mid:#c9991a55;
+  --bg:#0d0d0d;--bg2:#111;--bg3:#161616;--bg4:#1a1a1a;
+  --text:#f0e8d0;--text2:#aaa;--text3:#666;--text4:#444;
+  --green:#25d366;--red:#e63946;
+  --radius:8px;--radius-lg:12px;
+  --api:https://towertech-backend-production.up.railway.app;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+
+/* ===================== NAV ===================== */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:var(--bg2);border-bottom:1.5px solid var(--gold-dim);position:sticky;top:0;z-index:100;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-icon{width:36px;height:36px;background:var(--gold);clip-path:polygon(20% 0%,80% 0%,100% 20%,100% 55%,70% 75%,70% 85%,80% 100%,20% 100%,30% 85%,30% 75%,0% 55%,0% 20%);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--bg);flex-shrink:0;}
+.nav-logo-text{font-size:16px;font-weight:900;letter-spacing:2px;color:var(--gold);}
+.nav-logo-sub{font-size:8px;letter-spacing:3px;color:var(--text3);display:block;}
+.nav-links{display:flex;gap:20px;}
+.nav-links a{font-size:12px;letter-spacing:1px;color:var(--text2);text-decoration:none;font-weight:500;transition:color .2s;cursor:pointer;}
+.nav-links a:hover{color:var(--gold);}
+.nav-cta{background:var(--gold);color:var(--bg);border:none;padding:8px 16px;border-radius:4px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;cursor:pointer;transition:background .2s;white-space:nowrap;}
+.nav-cta:hover{background:var(--gold2);}
+.nav-hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--gold);border-radius:2px;transition:all .3s;}
+.nav-mobile{display:none;flex-direction:column;background:var(--bg2);border-bottom:1px solid var(--gold-dim);padding:16px 24px;gap:14px;}
+.nav-mobile a{font-size:14px;color:var(--text2);text-decoration:none;letter-spacing:1px;cursor:pointer;}
+.nav-mobile.open{display:flex;}
+
+/* ===================== HERO ===================== */
+.hero{max-width:960px;margin:0 auto;padding:56px 24px 40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-size:40px;font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:14px;}
+.hero h1 span{color:var(--gold);}
+.hero p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:24px;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-gold{background:var(--gold);color:var(--bg);border:none;padding:11px 22px;border-radius:4px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;cursor:pointer;transition:background .2s;}
+.btn-gold:hover{background:var(--gold2);}
+.btn-out{background:transparent;color:var(--gold);border:1.5px solid var(--gold-mid);padding:11px 22px;border-radius:4px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;cursor:pointer;transition:all .2s;}
+.btn-out:hover{border-color:var(--gold);background:var(--gold-dim);}
+.hero-vis{display:flex;align-items:center;justify-content:center;position:relative;height:220px;}
+.ring3{width:160px;height:160px;border-radius:50%;background:#c9991a0d;border:1.5px solid #c9991a1a;display:flex;align-items:center;justify-content:center;}
+.ring2{width:110px;height:110px;border-radius:50%;background:#c9991a15;border:1.5px solid #c9991a2a;display:flex;align-items:center;justify-content:center;}
+.ring1{width:68px;height:68px;background:var(--gold);clip-path:polygon(20% 0%,80% 0%,100% 20%,100% 55%,70% 75%,70% 85%,80% 100%,20% 100%,30% 85%,30% 75%,0% 55%,0% 20%);display:flex;align-items:center;justify-content:center;font-size:24px;}
+.fbadge{position:absolute;background:var(--bg4);border:1px solid var(--gold-dim);border-radius:6px;padding:5px 9px;font-size:10px;font-family:'Space Mono',monospace;color:var(--gold);}
+
+/* ===================== STATS ===================== */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gold-dim);border-top:1px solid var(--gold-dim);border-bottom:1px solid var(--gold-dim);}
+.stat{background:var(--bg2);padding:18px 24px;text-align:center;}
+.stat-n{font-size:26px;font-weight:900;color:var(--gold);}
+.stat-l{font-size:10px;color:var(--text3);letter-spacing:2px;margin-top:2px;}
+
+/* ===================== SECTIONS ===================== */
+.sec{max-width:960px;margin:0 auto;padding:44px 24px;}
+.sec-tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:6px;}
+.sec-title{font-size:24px;font-weight:900;margin-bottom:28px;}
+.sec-title span{color:var(--gold);}
+.div{height:1px;background:#c9991a0d;}
+
+/* ===================== SERVICES ===================== */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.svc-card{background:var(--bg2);border:1px solid #c9991a1a;border-radius:var(--radius);padding:18px;cursor:pointer;transition:all .2s;}
+.svc-card:hover{border-color:var(--gold-mid);background:var(--bg3);}
+.svc-ico{width:38px;height:38px;background:#c9991a15;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:18px;}
+.svc-name{font-size:13px;font-weight:700;margin-bottom:3px;}
+.svc-desc{font-size:11px;color:var(--text3);line-height:1.5;}
+.svc-price{font-size:12px;color:var(--gold);font-weight:700;margin-top:8px;}
+
+/* ===================== RASTREAMENTO ===================== */
+.track-wrap{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius-lg);padding:28px;}
+.track-input-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.track-input{flex:1;min-width:200px;background:var(--bg);border:1px solid var(--gold-dim);border-radius:6px;color:var(--text);padding:10px 14px;font-family:'Exo 2',sans-serif;font-size:13px;outline:none;text-transform:uppercase;}
+.track-input:focus{border-color:var(--gold);}
+.track-result{display:none;}
+.track-status-badge{display:inline-flex;align-items:center;gap:8px;background:#c9991a15;border:1px solid var(--gold-mid);border-radius:6px;padding:10px 16px;font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;}
+.track-timeline{display:flex;flex-direction:column;gap:0;}
+.track-step{display:flex;gap:14px;position:relative;}
+.track-step:not(:last-child)::before{content:'';position:absolute;left:15px;top:32px;width:2px;height:calc(100% - 8px);background:var(--gold-dim);}
+.track-dot{width:32px;height:32px;border-radius:50%;background:var(--gold-dim);border:2px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:4px;}
+.track-dot.active{background:var(--gold);border-color:var(--gold);}
+.track-info{padding:4px 0 20px;}
+.track-info strong{display:block;font-size:13px;font-weight:700;margin-bottom:2px;}
+.track-info span{font-size:11px;color:var(--text3);}
+
+/* ===================== CONSÓRCIO ===================== */
+.cons-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+.cons-info{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius-lg);padding:24px;}
+.cons-step{display:flex;gap:14px;margin-bottom:18px;align-items:flex-start;}
+.cons-num{width:28px;height:28px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--bg);flex-shrink:0;margin-top:2px;}
+.cons-step-text strong{display:block;font-size:13px;font-weight:700;margin-bottom:2px;}
+.cons-step-text span{font-size:11px;color:var(--text3);line-height:1.5;}
+.cons-calc{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius-lg);padding:24px;}
+.cons-calc h3{font-size:14px;font-weight:700;margin-bottom:18px;letter-spacing:1px;}
+.calc-row{margin-bottom:14px;}
+.calc-label{font-size:10px;letter-spacing:2px;color:var(--text2);margin-bottom:5px;text-transform:uppercase;}
+.calc-row select,.calc-row input{width:100%;background:var(--bg);border:1px solid var(--gold-dim);border-radius:6px;color:var(--text);padding:9px 12px;font-family:'Exo 2',sans-serif;font-size:13px;outline:none;}
+.calc-row select:focus,.calc-row input:focus{border-color:var(--gold);}
+.calc-row select option{background:var(--bg2);}
+.calc-result{background:var(--bg);border:1px solid var(--gold-mid);border-radius:var(--radius);padding:16px;margin-top:16px;}
+.calc-result-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.calc-result-row:last-child{margin-bottom:0;padding-top:8px;border-top:1px solid var(--gold-dim);}
+.calc-result-row .lbl{font-size:11px;color:var(--text3);}
+.calc-result-row .val{font-size:13px;font-weight:700;}
+.calc-result-row .val.gold{color:var(--gold);font-size:16px;}
+.prog-bar{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-top:8px;}
+.prog-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .4s;}
+.prog-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:3px;}
+.cons-disclaimer{font-size:10px;color:var(--text4);line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid #c9991a11;}
+
+/* ===================== PRODUCTS ===================== */
+.tabs{display:flex;border-bottom:1px solid var(--gold-dim);margin-bottom:20px;overflow-x:auto;}
+.tab{padding:9px 18px;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;border-top:none;border-left:none;border-right:none;background:none;font-family:'Exo 2',sans-serif;white-space:nowrap;}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.tab:hover{color:#c9991a88;}
+.prod-card{background:var(--bg2);border:1px solid #c9991a1a;border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .2s;}
+.prod-card:hover{border-color:var(--gold-mid);transform:translateY(-2px);}
+.prod-img{height:90px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:36px;border-bottom:1px solid #c9991a0d;}
+.prod-info{padding:12px;}
+.prod-name{font-size:12px;font-weight:700;margin-bottom:3px;}
+.prod-spec{font-size:10px;color:var(--text3);margin-bottom:8px;}
+.prod-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;}
+.prod-price{font-size:14px;font-weight:900;color:var(--gold);}
+.prod-btns{display:flex;gap:5px;}
+.prod-btn{background:var(--gold);color:var(--bg);border:none;padding:5px 9px;border-radius:4px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700;cursor:pointer;transition:background .2s;}
+.prod-btn:hover{background:var(--gold2);}
+.prod-btn.sec{background:transparent;color:var(--gold);border:1px solid var(--gold-mid);font-size:10px;}
+.prod-btn.sec:hover{background:var(--gold-dim);border-color:var(--gold);}
+
+/* ===================== AVALIAÇÕES ===================== */
+.aval-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.aval-card{background:var(--bg2);border:1px solid #c9991a1a;border-radius:var(--radius);padding:16px;}
+.aval-stars{color:var(--gold);font-size:14px;margin-bottom:8px;}
+.aval-text{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px;}
+.aval-name{font-size:11px;color:var(--text3);font-family:'Space Mono',monospace;}
+.aval-media{display:flex;align-items:center;gap:16px;background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius);padding:16px;margin-bottom:20px;}
+.aval-media-num{font-size:48px;font-weight:900;color:var(--gold);line-height:1;}
+.aval-media-info small{font-size:11px;color:var(--text3);}
+
+/* ===================== FORMULÁRIO ===================== */
+.form-wrap{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius-lg);padding:28px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg.full{grid-column:1/-1;}
+.fg label{font-size:10px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;}
+.fg input,.fg select,.fg textarea{background:var(--bg);border:1px solid var(--gold-dim);border-radius:6px;color:var(--text);padding:9px 12px;font-family:'Exo 2',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);}
+.fg select option{background:var(--bg2);}
+.fg textarea{resize:vertical;min-height:70px;}
+.form-foot{display:flex;gap:10px;align-items:center;margin-top:18px;flex-wrap:wrap;}
+.form-note{font-size:11px;color:var(--text4);}
+
+/* ===================== AGENDA ===================== */
+.agenda-wrap{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius-lg);padding:28px;}
+.agenda-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.horarios{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px;}
+.horario-btn{background:var(--bg);border:1px solid var(--gold-dim);border-radius:4px;color:var(--text2);padding:8px 4px;font-family:'Exo 2',sans-serif;font-size:11px;cursor:pointer;transition:all .2s;text-align:center;}
+.horario-btn:hover,.horario-btn.sel{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:700;}
+
+/* ===================== SOCIAL BAR ===================== */
+.social-bar{display:flex;gap:12px;justify-content:center;padding:20px 24px;background:#090909;border-top:1px solid #c9991a11;flex-wrap:wrap;}
+.social-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:6px;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer;text-decoration:none;border:1.5px solid transparent;transition:all .2s;}
+.social-btn.wa{background:#25d36615;border-color:#25d36633;color:var(--green);}
+.social-btn.wa:hover{background:#25d36625;border-color:var(--green);}
+.social-btn.ig{background:#e1306c15;border-color:#e1306c33;color:#e1306c;}
+.social-btn.ig:hover{background:#e1306c25;border-color:#e1306c;}
+.footer{background:#090909;border-top:1px solid #c9991a11;padding:20px 24px;text-align:center;font-size:11px;color:var(--text4);letter-spacing:1px;}
+.footer span{color:var(--gold);}
+.wa-float{position:fixed;bottom:20px;right:20px;z-index:200;width:48px;height:48px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:white;border:none;box-shadow:0 4px 20px #25d36644;text-decoration:none;}
+
+/* ===================== TOAST ===================== */
+.toast{position:fixed;bottom:80px;right:20px;background:var(--bg2);border:1px solid var(--gold-mid);border-radius:var(--radius);padding:12px 18px;font-size:12px;color:var(--text);z-index:300;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:768px){
+  .nav-links,.nav-cta{display:none;}
+  .nav-hamburger{display:flex;}
+  .hero{grid-template-columns:1fr;padding:32px 16px 24px;}
+  .hero-vis{display:none;}
+  .hero h1{font-size:28px;}
+  .stats{grid-template-columns:repeat(3,1fr);}
+  .stat{padding:12px 8px;}
+  .stat-n{font-size:20px;}
+  .stat-l{font-size:9px;}
+  .sec{padding:32px 16px;}
+  .grid3{grid-template-columns:1fr 1fr;}
+  .cons-layout{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .fg.full{grid-column:1;}
+  .aval-grid{grid-template-columns:1fr;}
+  .agenda-grid{grid-template-columns:1fr;}
+  .horarios{grid-template-columns:repeat(3,1fr);}
+  .sec-title{font-size:20px;}
+}
+@media(max-width:480px){
+  .grid3{grid-template-columns:1fr;}
+  .hero h1{font-size:24px;}
+  .stats{grid-template-columns:repeat(3,1fr);}
+  .horarios{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">T</div>
+    <div>
+      <div class="nav-logo-text">TOWERTECH</div>
+      <span class="nav-logo-sub">ASSISTÊNCIA TÉCNICA</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a onclick="go('servicos')">Serviços</a>
+    <a onclick="go('rastreamento')">Rastrear OS</a>
+    <a onclick="go('consorcio')">Consórcio</a>
+    <a onclick="go('loja')">Loja</a>
+    <a onclick="go('avaliacoes')">Avaliações</a>
+    <a onclick="go('contato')">Contato</a>
+  </div>
+  <button class="nav-cta" onclick="go('contato')">AGENDAR</button>
+  <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile" id="navMobile">
+  <a onclick="go('servicos');toggleMenu()">Serviços</a>
+  <a onclick="go('rastreamento');toggleMenu()">Rastrear OS</a>
+  <a onclick="go('consorcio');toggleMenu()">Consórcio</a>
+  <a onclick="go('loja');toggleMenu()">Loja</a>
+  <a onclick="go('avaliacoes');toggleMenu()">Avaliações</a>
+  <a onclick="go('contato');toggleMenu()">Contato</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-eyebrow">// SUMARÉ — SP</div>
+    <h1>Reparo que<br><span>você confia.</span><br>Tecnologia que<br>dura.</h1>
+    <p>Manutenção especializada em smartphones, notebooks e eletrônicos. Peças originais, diagnóstico gratuito e garantia em todos os serviços.</p>
+    <div class="hero-btns">
+      <button class="btn-gold" onclick="go('contato')">AGENDAR SERVIÇO</button>
+      <button class="btn-out" onclick="go('consorcio')">VER CONSÓRCIO</button>
+    </div>
+  </div>
+  <div class="hero-vis">
+    <div class="ring3"><div class="ring2"><div class="ring1">⚙️</div></div></div>
+    <div class="fbadge" style="top:10px;left:0">✓ Garantia 90d</div>
+    <div class="fbadge" style="top:10px;right:0">⚡ Express 24h</div>
+    <div class="fbadge" style="bottom:10px;left:0">🔧 Diagnóstico grátis</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-n">500+</div><div class="stat-l">CLIENTES</div></div>
+  <div class="stat"><div class="stat-n">98%</div><div class="stat-l">SATISFAÇÃO</div></div>
+  <div class="stat"><div class="stat-n">24H</div><div class="stat-l">PRAZO MÉDIO</div></div>
+</div>
+<div class="div"></div>
+
+<!-- SERVIÇOS -->
+<section id="servicos" class="sec">
+  <div class="sec-tag">// o que fazemos</div>
+  <div class="sec-title">Nossos <span>Serviços</span></div>
+  <div class="grid3">
+    <div class="svc-card" onclick="selSvc('Troca de Tela')"><div class="svc-ico">📱</div><div class="svc-name">Troca de Tela</div><div class="svc-desc">Display + touch originais. Troca em até 1h.</div><div class="svc-price">A partir de R$ 150</div></div>
+    <div class="svc-card" onclick="selSvc('Troca de Bateria')"><div class="svc-ico">🔋</div><div class="svc-name">Troca de Bateria</div><div class="svc-desc">Restaure a autonomia com bateria nova.</div><div class="svc-price">A partir de R$ 80</div></div>
+    <div class="svc-card" onclick="selSvc('Manutenção de Notebook')"><div class="svc-ico">💻</div><div class="svc-name">Notebook</div><div class="svc-desc">Limpeza, HD/SSD, pasta térmica e mais.</div><div class="svc-price">A partir de R$ 120</div></div>
+    <div class="svc-card" onclick="selSvc('Recuperação de Dados')"><div class="svc-ico">💾</div><div class="svc-name">Recuperação de Dados</div><div class="svc-desc">Fotos e arquivos recuperados mesmo em aparelhos danificados.</div><div class="svc-price">Sob consulta</div></div>
+    <div class="svc-card" onclick="selSvc('Dano por Líquido')"><div class="svc-ico">💧</div><div class="svc-name">Dano por Líquido</div><div class="svc-desc">Limpeza ultrassônica e troca de componentes.</div><div class="svc-price">A partir de R$ 100</div></div>
+    <div class="svc-card" onclick="selSvc('Diagnóstico Geral')"><div class="svc-ico">🔍</div><div class="svc-name">Diagnóstico Geral</div><div class="svc-desc">Não sabe o que está errado? Orçamento sem compromisso.</div><div class="svc-price">Gratuito</div></div>
+  </div>
+</section>
+<div class="div"></div>
+
+<!-- RASTREAMENTO -->
+<section id="rastreamento" class="sec">
+  <div class="sec-tag">// acompanhe seu reparo</div>
+  <div class="sec-title">Rastrear <span>Ordem de Serviço</span></div>
+  <div class="track-wrap">
+    <div class="track-input-row">
+      <input class="track-input" id="trackCod" placeholder="Digite o código da OS (ex: OS-2025-00001)" maxlength="20"/>
+      <button class="btn-gold" onclick="rastrear()">RASTREAR</button>
+    </div>
+    <div class="track-result" id="trackResult"></div>
+  </div>
+</section>
+<div class="div"></div>
+
+<!-- CONSÓRCIO -->
+<section id="consorcio" class="sec">
+  <div class="sec-tag">// novidade towertech</div>
+  <div class="sec-title">Consórcio <span>TowerTech</span></div>
+  <div class="cons-layout">
+    <div class="cons-info">
+      <div class="cons-step"><div class="cons-num">1</div><div class="cons-step-text"><strong>Escolha seu aparelho</strong><span>Selecione o produto desejado. Sem burocracia, sem análise de crédito.</span></div></div>
+      <div class="cons-step"><div class="cons-num">2</div><div class="cons-step-text"><strong>Pague no seu ritmo</strong><span>Semanal, quinzenal ou mensal. Você escolhe o valor das parcelas.</span></div></div>
+      <div class="cons-step"><div class="cons-num">3</div><div class="cons-step-text"><strong>Receba ao atingir 70%</strong><span>Com 70% pago o aparelho é seu! Continue pagando o restante com o produto em mãos.</span></div></div>
+      <div class="cons-step" style="margin-bottom:0"><div class="cons-num">4</div><div class="cons-step-text"><strong>Desistiu? Devolução 100%</strong><span>Se precisar sair, devolvemos todo o valor pago. Sem letras miúdas.</span></div></div>
+    </div>
+    <div class="cons-calc">
+      <h3>SIMULE SEU CONSÓRCIO</h3>
+      <div class="calc-row"><div class="calc-label">Produto</div>
+        <select id="ccProd" onchange="calcCons()">
+          <option value="3200">iPhone 14 128GB — R$ 3.200</option>
+          <option value="1100">Samsung Galaxy A54 — R$ 1.100</option>
+          <option value="2400">Dell Inspiron i5 — R$ 2.400</option>
+          <option value="900">Motorola Moto G84 — R$ 900</option>
+          <option value="0">Outro valor</option>
+        </select>
+      </div>
+      <div class="calc-row" id="customRow" style="display:none"><div class="calc-label">Valor (R$)</div><input type="number" id="ccCustom" placeholder="Ex: 1500" oninput="calcCons()"/></div>
+      <div class="calc-row"><div class="calc-label">Frequência</div>
+        <select id="ccFreq" onchange="calcCons()">
+          <option value="30">Mensal</option>
+          <option value="15">Quinzenal</option>
+          <option value="7">Semanal</option>
+        </select>
+      </div>
+      <div class="calc-row"><div class="calc-label">Valor por parcela (R$)</div><input type="number" id="ccParc" placeholder="Ex: 200" oninput="calcCons()"/></div>
+      <div class="calc-result">
+        <div class="calc-result-row"><span class="lbl">Valor total</span><span class="val" id="rTotal">—</span></div>
+        <div class="calc-result-row"><span class="lbl">Para contemplação (70%)</span><span class="val" id="r70">—</span></div>
+        <div class="calc-result-row"><span class="lbl">Parcelas até contemplação</span><span class="val" id="rParc">—</span></div>
+        <div class="calc-result-row"><span class="lbl">Tempo estimado</span><span class="val gold" id="rTempo">—</span></div>
+        <div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+        <div class="prog-labels"><span>R$ 0</span><span id="progMeta">Meta: 70%</span></div>
+      </div>
+      <div class="cons-disclaimer">* Simulação aproximada. Valores confirmados via WhatsApp.</div>
+      <button class="btn-gold" style="width:100%;margin-top:14px" onclick="consWhats()">QUERO MEU CONSÓRCIO 📲</button>
+    </div>
+  </div>
+</section>
+<div class="div"></div>
+
+<!-- LOJA -->
+<section id="loja" class="sec">
+  <div class="sec-tag">// produtos</div>
+  <div class="sec-title">Loja <span>TowerTech</span></div>
+  <div class="tabs">
+    <button class="tab active" onclick="filterP(this,'todos')">TODOS</button>
+    <button class="tab" onclick="filterP(this,'celular')">CELULARES</button>
+    <button class="tab" onclick="filterP(this,'notebook')">NOTEBOOKS</button>
+    <button class="tab" onclick="filterP(this,'acessorio')">ACESSÓRIOS</button>
+  </div>
+  <div class="grid3" id="pgrid">
+    <div class="prod-card" data-cat="celular" data-name="iPhone 14 128GB" data-price="3200"><div class="prod-img">📱</div><div class="prod-info"><div class="prod-name">iPhone 14 — 128GB</div><div class="prod-spec">Preto • Seminovo • Garantia 6 meses</div><div class="prod-foot"><div class="prod-price">R$ 3.200</div><div class="prod-btns"><button class="prod-btn sec" onclick="consProd(this)">CONSÓRCIO</button><button class="prod-btn" onclick="buyP(this)">COMPRAR</button></div></div></div></div>
+    <div class="prod-card" data-cat="celular" data-name="Samsung Galaxy A54" data-price="1100"><div class="prod-img">📱</div><div class="prod-info"><div class="prod-name">Samsung Galaxy A54</div><div class="prod-spec">Branco • Seminovo • Garantia 3 meses</div><div class="prod-foot"><div class="prod-price">R$ 1.100</div><div class="prod-btns"><button class="prod-btn sec" onclick="consProd(this)">CONSÓRCIO</button><button class="prod-btn" onclick="buyP(this)">COMPRAR</button></div></div></div></div>
+    <div class="prod-card" data-cat="notebook" data-name="Dell Inspiron i5" data-price="2400"><div class="prod-img">💻</div><div class="prod-info"><div class="prod-name">Dell Inspiron i5</div><div class="prod-spec">8GB RAM • SSD 256GB • Garantia 6 meses</div><div class="prod-foot"><div class="prod-price">R$ 2.400</div><div class="prod-btns"><button class="prod-btn sec" onclick="consProd(this)">CONSÓRCIO</button><button class="prod-btn" onclick="buyP(this)">COMPRAR</button></div></div></div></div>
+    <div class="prod-card" data-cat="acessorio" data-name="Fone JBL Tune 510BT" data-price="220"><div class="prod-img">🎧</div><div class="prod-info"><div class="prod-name">Fone Bluetooth JBL</div><div class="prod-spec">Tune 510BT • Novo • Lacrado</div><div class="prod-foot"><div class="prod-price">R$ 220</div><div class="prod-btns"><button class="prod-btn" onclick="buyP(this)">COMPRAR</button></div></div></div></div>
+    <div class="prod-card" data-cat="acessorio" data-name="Carregador 65W GaN" data-price="85"><div class="prod-img">🔌</div><div class="prod-info"><div class="prod-name">Carregador 65W GaN</div><div class="prod-spec">USB-C • Universal • Novo</div><div class="prod-foot"><div class="prod-price">R$ 85</div><div class="prod-btns"><button class="prod-btn" onclick="buyP(this)">COMPRAR</button></div></div></div></div>
+    <div class="prod-card" data-cat="celular" data-name="Motorola Moto G84" data-price="900"><div class="prod-img">📱</div><div class="prod-info"><div class="prod-name">Motorola Moto G84</div><div class="prod-spec">Grafite • Seminovo • Garantia 3 meses</div><div class="prod-foot"><div class="prod-price">R$ 900</div><div class="prod-btns"><button class="prod-btn sec" onclick="consProd(this)">CONSÓRCIO</button><button class="prod-btn" onclick="buyP(this)">COMPRAR</button></div></div></div></div>
+  </div>
+</section>
+<div class="div"></div>
+
+<!-- AVALIAÇÕES -->
+<section id="avaliacoes" class="sec">
+  <div class="sec-tag">// o que dizem os clientes</div>
+  <div class="sec-title">Avaliações <span>Reais</span></div>
+  <div class="aval-media" id="avalMedia">
+    <div class="aval-media-num" id="avalNota">—</div>
+    <div class="aval-media-info">
+      <div style="color:var(--gold);font-size:20px" id="avalStars">⭐⭐⭐⭐⭐</div>
+      <small id="avalTotal">Carregando avaliações...</small>
+    </div>
+  </div>
+  <div class="aval-grid" id="avalGrid">
+    <div class="aval-card" style="grid-column:1/-1;text-align:center;color:var(--text3);padding:32px">Carregando avaliações...</div>
+  </div>
+</section>
+<div class="div"></div>
+
+<!-- AGENDAMENTO -->
+<section id="agenda" class="sec">
+  <div class="sec-tag">// marque seu horário</div>
+  <div class="sec-title">Agendamento <span>Online</span></div>
+  <div class="agenda-wrap">
+    <div class="agenda-grid">
+      <div class="fg"><label>Nome</label><input type="text" id="agNome" placeholder="Seu nome"/></div>
+      <div class="fg"><label>WhatsApp</label><input type="text" id="agTel" placeholder="(19) 99999-9999"/></div>
+      <div class="fg"><label>Aparelho</label><input type="text" id="agApar" placeholder="Ex: iPhone 13, Samsung A54"/></div>
+      <div class="fg"><label>Data</label><input type="date" id="agData" min=""/></div>
+    </div>
+    <div class="fg" style="margin-top:14px"><label>Horário</label>
+      <div class="horarios">
+        <button class="horario-btn" onclick="selHora(this)">08:00</button>
+        <button class="horario-btn" onclick="selHora(this)">09:00</button>
+        <button class="horario-btn" onclick="selHora(this)">10:00</button>
+        <button class="horario-btn" onclick="selHora(this)">11:00</button>
+        <button class="horario-btn" onclick="selHora(this)">13:00</button>
+        <button class="horario-btn" onclick="selHora(this)">14:00</button>
+        <button class="horario-btn" onclick="selHora(this)">15:00</button>
+        <button class="horario-btn" onclick="selHora(this)">16:00</button>
+      </div>
+    </div>
+    <div class="fg" style="margin-top:14px"><label>Problema</label><textarea id="agProb" placeholder="Descreva o problema do aparelho..." style="min-height:60px"></textarea></div>
+    <div class="form-foot" style="margin-top:18px">
+      <button class="btn-gold" onclick="agendar()">CONFIRMAR AGENDAMENTO</button>
+      <span class="form-note">Confirmaremos pelo WhatsApp em breve</span>
+    </div>
+  </div>
+</section>
+<div class="div"></div>
+
+<!-- FORMULÁRIO SERVIÇO -->
+<section id="contato" class="sec">
+  <div class="sec-tag">// solicitar serviço</div>
+  <div class="sec-title">Feche um <span>Serviço</span></div>
+  <div class="form-wrap">
+    <div class="form-grid">
+      <div class="fg"><label>Nome</label><input type="text" id="fn" placeholder="Seu nome completo"/></div>
+      <div class="fg"><label>WhatsApp</label><input type="text" id="fp" placeholder="(19) 99999-9999"/></div>
+      <div class="fg"><label>Aparelho</label>
+        <select id="fd"><option value="">Selecione</option><option>Smartphone</option><option>Notebook / PC</option><option>Tablet</option><option>Videogame / Console</option><option>Outro</option></select>
+      </div>
+      <div class="fg"><label>Serviço</label>
+        <select id="fs"><option value="">Selecione</option><option>Troca de Tela</option><option>Troca de Bateria</option><option>Manutenção de Notebook</option><option>Recuperação de Dados</option><option>Dano por Líquido</option><option>Diagnóstico Geral</option><option>Outro</option></select>
+      </div>
+      <div class="fg full"><label>Descreva o problema</label><textarea id="fdesc" placeholder="Ex: tela quebrada, bateria murchando..."></textarea></div>
+    </div>
+    <div class="form-foot">
+      <button class="btn-gold" onclick="sendWA()">📲 ENVIAR PELO WHATSAPP</button>
+      <span class="form-note">Você será redirecionado ao WhatsApp</span>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL BAR -->
+<div class="social-bar">
+  <a class="social-btn wa" href="https://wa.me/5519982608656" target="_blank">📱 (19) 98260-8656</a>
+  <a class="social-btn ig" href="https://www.instagram.com/towertech_s/" target="_blank">📸 @towertech_s</a>
+</div>
+<div class="footer"><p>© 2025 <span>TowerTech</span> Assistência Técnica — Sumaré, SP</p></div>
+<a class="wa-float" href="https://wa.me/5519982608656?text=Olá!%20Vim%20pelo%20site%20da%20TowerTech." target="_blank">📱</a>
+<div class="toast" id="toast"></div>
+
+<script>
+const WA='5519982608656';
+const API='https://towertech-backend-production.up.railway.app';
+
+function go(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});}
+function toggleMenu(){document.getElementById('navMobile').classList.toggle('open');}
+
+function toast(msg,ms=3000){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),ms);
+}
+
+function selSvc(s){
+  document.getElementById('fs').value=s;
+  go('contato');
+}
+
+// ── RASTREAMENTO ──
+async function rastrear(){
+  const cod=document.getElementById('trackCod').value.trim().toUpperCase();
+  if(!cod){toast('Digite o código da OS');return;}
+  const res=document.getElementById('trackResult');
+  res.style.display='block';
+  res.innerHTML='<div style="color:var(--text3);font-size:13px">🔍 Buscando...</div>';
+  try{
+    const r=await fetch(`${API}/api/rastreamento/${cod}`);
+    if(!r.ok)throw new Error('não encontrada');
+    const d=await r.json();
+    const steps=d.historico.map(h=>`
+      <div class="track-step">
+        <div class="track-dot active">${h.emoji||'📌'}</div>
+        <div class="track-info"><strong>${h.status}</strong><span>${h.observacao} · ${new Date(h.data).toLocaleDateString('pt-BR')}</span></div>
+      </div>`).join('');
+    res.innerHTML=`
+      <div class="track-status-badge">${d.statusEmoji} ${d.statusDesc}</div>
+      <div class="track-timeline">${steps}</div>`;
+  }catch(e){
+    res.innerHTML=`<div style="color:var(--red);font-size:13px">❌ OS não encontrada. Verifique o código e tente novamente.</div>`;
+  }
+}
+
+// ── CONSÓRCIO CALC ──
+function calcCons(){
+  const sel=document.getElementById('ccProd');
+  const freq=parseInt(document.getElementById('ccFreq').value);
+  document.getElementById('customRow').style.display=sel.value==='0'?'block':'none';
+  let total=parseInt(sel.value)||0;
+  if(sel.value==='0')total=parseInt(document.getElementById('ccCustom').value)||0;
+  const parc=parseFloat(document.getElementById('ccParc').value)||0;
+  const meta=Math.ceil(total*0.7);
+  document.getElementById('rTotal').textContent=total?'R$ '+total.toLocaleString('pt-BR'):'—';
+  document.getElementById('r70').textContent=meta?'R$ '+meta.toLocaleString('pt-BR'):'—';
+  if(total&&parc&&freq){
+    const n=Math.ceil(meta/parc);
+    const dias=n*freq;
+    let tempo=freq===30?n+' meses':freq===15?Math.ceil(n/2)+' meses':'~'+Math.ceil(dias/30)+' meses';
+    document.getElementById('rParc').textContent=n+' parcelas de R$ '+parc.toLocaleString('pt-BR');
+    document.getElementById('rTempo').textContent=tempo;
+    const pct=Math.min(100,Math.round((parc/meta)*100));
+    document.getElementById('prog').style.width=pct+'%';
+    document.getElementById('progMeta').textContent='Meta: R$ '+meta.toLocaleString('pt-BR');
+  }
+}
+
+function consWhats(){
+  const prod=document.getElementById('ccProd');
+  const freq=document.getElementById('ccFreq');
+  const parc=document.getElementById('ccParc').value;
+  const msg=encodeURIComponent('🏆 *Interesse em Consórcio TowerTech*\n\n📦 Produto: '+prod.options[prod.selectedIndex].text+'\n📅 Frequência: '+freq.options[freq.selectedIndex].text+(parc?'\n💰 Parcela: R$ '+parc:'')+'\n\nQuero mais informações!');
+  window.open('https://wa.me/'+WA+'?text='+msg,'_blank');
+}
+
+function consProd(btn){
+  const c=btn.closest('.prod-card');
+  const opts=document.getElementById('ccProd').options;
+  let found=false;
+  for(let o of opts){if(o.value===c.dataset.price){document.getElementById('ccProd').value=c.dataset.price;found=true;break;}}
+  if(!found){document.getElementById('ccProd').value='0';document.getElementById('ccCustom').value=c.dataset.price;}
+  calcCons();go('consorcio');
+}
+
+// ── PRODUTOS ──
+function filterP(btn,cat){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.prod-card').forEach(c=>{c.style.display=(cat==='todos'||c.dataset.cat===cat)?'block':'none';});
+}
+function buyP(btn){
+  const c=btn.closest('.prod-card');
+  const msg=encodeURIComponent('Olá! Tenho interesse em: '+c.dataset.name+' (R$ '+parseInt(c.dataset.price).toLocaleString('pt-BR')+'). Ainda disponível?');
+  window.open('https://wa.me/'+WA+'?text='+msg,'_blank');
+}
+
+// ── AVALIAÇÕES (conectado à API) ──
+async function loadAvaliacoes(){
+  try{
+    const r=await fetch(`${API}/api/avaliacoes`);
+    const d=await r.json();
+    document.getElementById('avalNota').textContent=d.mediaGeral;
+    document.getElementById('avalTotal').textContent=d.total+' avaliações';
+    const stars='⭐'.repeat(Math.round(parseFloat(d.mediaGeral)||5));
+    document.getElementById('avalStars').textContent=stars;
+    const grid=document.getElementById('avalGrid');
+    if(d.avaliacoes.length===0){
+      grid.innerHTML='<div class="aval-card" style="grid-column:1/-1;text-align:center;color:var(--text3);padding:32px">Seja o primeiro a avaliar! ⭐</div>';
+      return;
+    }
+    grid.innerHTML=d.avaliacoes.slice(0,6).map(a=>`
+      <div class="aval-card">
+        <div class="aval-stars">${'⭐'.repeat(a.nota)}</div>
+        <div class="aval-text">${a.comentario||'Ótimo serviço!'}</div>
+        <div class="aval-name">${a.nome}</div>
+      </div>`).join('');
+  }catch(e){
+    document.getElementById('avalGrid').innerHTML='<div class="aval-card" style="grid-column:1/-1;text-align:center;color:var(--text3);padding:32px">Sem avaliações ainda. Seja o primeiro! ⭐</div>';
+  }
+}
+
+// ── AGENDAMENTO (conectado à API) ──
+let horaSel='';
+function selHora(btn){
+  document.querySelectorAll('.horario-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');horaSel=btn.textContent;
+}
+async function agendar(){
+  const nome=document.getElementById('agNome').value.trim();
+  const tel=document.getElementById('agTel').value.trim();
+  const apar=document.getElementById('agApar').value.trim();
+  const data=document.getElementById('agData').value;
+  const prob=document.getElementById('agProb').value.trim();
+  if(!nome||!apar||!data||!horaSel){toast('Preencha nome, aparelho, data e horário');return;}
+  try{
+    const r=await fetch(`${API}/api/agendamento`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({data,horario:horaSel+':00',aparelho:apar,descricaoProblema:prob,clienteNome:nome,clienteTelefone:tel})
+    });
+    const d=await r.json();
+    if(r.ok){
+      toast('✅ Agendamento realizado! Confirmaremos pelo WhatsApp.');
+      document.getElementById('agNome').value='';document.getElementById('agTel').value='';
+      document.getElementById('agApar').value='';document.getElementById('agData').value='';
+      document.getElementById('agProb').value='';horaSel='';
+      document.querySelectorAll('.horario-btn').forEach(b=>b.classList.remove('sel'));
+    }else{toast('❌ '+(d.erro||'Erro ao agendar. Tente pelo WhatsApp.'));}
+  }catch(e){
+    const msg=encodeURIComponent('📅 *Agendamento TowerTech*\n\n👤 '+nome+'\n📱 '+tel+'\n🖥️ '+apar+'\n📅 '+data+' às '+horaSel+'\n📝 '+(prob||'sem descrição'));
+    window.open('https://wa.me/'+WA+'?text='+msg,'_blank');
+  }
+}
+
+// ── FORMULÁRIO SERVIÇO ──
+function sendWA(){
+  const n=document.getElementById('fn').value.trim();
+  const p=document.getElementById('fp').value.trim();
+  const d=document.getElementById('fd').value;
+  const s=document.getElementById('fs').value;
+  const desc=document.getElementById('fdesc').value.trim();
+  if(!n||!d||!s){toast('Preencha nome, aparelho e serviço');return;}
+  const msg=encodeURIComponent('🔧 *Pedido de Serviço — TowerTech*\n\n👤 '+n+'\n📱 '+(p||'não informado')+'\n🖥️ '+d+'\n⚙️ '+s+'\n📝 '+(desc||'não informado'));
+  window.open('https://wa.me/'+WA+'?text='+msg,'_blank');
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  // Data mínima = amanhã
+  const amanha=new Date();amanha.setDate(amanha.getDate()+1);
+  document.getElementById('agData').min=amanha.toISOString().split('T')[0];
+  calcCons();
+  loadAvaliacoes();
+});
+</script>
+</body>
+</html>
