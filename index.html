@@ -3,25 +3,20 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>TowerTech — Assistência Técnica</title>
+<title>TowerTech.s. — Assistência Técnica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
-/* ===================== RESET & VARS ===================== */
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --gold:#c9991a;--gold2:#e6b020;--gold-dim:#c9991a22;--gold-mid:#c9991a55;
   --bg:#0d0d0d;--bg2:#111;--bg3:#161616;--bg4:#1a1a1a;
   --text:#f0e8d0;--text2:#aaa;--text3:#666;--text4:#444;
-  --green:#25d366;--red:#e63946;
-  --radius:8px;--radius-lg:12px;
-  --api:https://towertech-backend-production.up.railway.app;
+  --green:#25d366;--red:#e63946;--radius:8px;--radius-lg:12px;
 }
 html{scroll-behavior:smooth;}
 body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
-
-/* ===================== NAV ===================== */
-.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:var(--bg2);border-bottom:1.5px solid var(--gold-dim);position:sticky;top:0;z-index:100;}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:var(--bg2);border-bottom:1.5px solid var(--gold-dim);position:sticky;top:0;z-index:100;gap:8px;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
 .nav-logo-icon{width:36px;height:36px;background:var(--gold);clip-path:polygon(20% 0%,80% 0%,100% 20%,100% 55%,70% 75%,70% 85%,80% 100%,20% 100%,30% 85%,30% 75%,0% 55%,0% 20%);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--bg);flex-shrink:0;}
 .nav-logo-text{font-size:16px;font-weight:900;letter-spacing:2px;color:var(--gold);}
@@ -31,13 +26,16 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 .nav-links a:hover{color:var(--gold);}
 .nav-cta{background:var(--gold);color:var(--bg);border:none;padding:8px 16px;border-radius:4px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;cursor:pointer;transition:background .2s;white-space:nowrap;}
 .nav-cta:hover{background:var(--gold2);}
-.nav-hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;}
-.nav-hamburger span{display:block;width:22px;height:2px;background:var(--gold);border-radius:2px;transition:all .3s;}
+.nav-hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px;}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--gold);border-radius:2px;}
 .nav-mobile{display:none;flex-direction:column;background:var(--bg2);border-bottom:1px solid var(--gold-dim);padding:16px 24px;gap:14px;}
 .nav-mobile a{font-size:14px;color:var(--text2);text-decoration:none;letter-spacing:1px;cursor:pointer;}
 .nav-mobile.open{display:flex;}
-
-/* ===================== HERO ===================== */
+.nav-login-btn{font-size:12px;color:var(--text2);background:none;border:1px solid var(--gold-dim);padding:6px 12px;border-radius:4px;cursor:pointer;font-family:'Exo 2',sans-serif;transition:all .2s;white-space:nowrap;}
+.nav-login-btn:hover{border-color:var(--gold);color:var(--gold);}
+.nav-user{display:flex;align-items:center;gap:6px;cursor:pointer;}
+.nav-user-ico{width:28px;height:28px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--bg);}
+.nav-user-name{font-size:11px;color:var(--gold);font-weight:700;}
 .hero{max-width:960px;margin:0 auto;padding:56px 24px 40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
 .hero-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--gold);margin-bottom:10px;}
 .hero h1{font-size:40px;font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:14px;}
@@ -48,26 +46,16 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 .btn-gold:hover{background:var(--gold2);}
 .btn-out{background:transparent;color:var(--gold);border:1.5px solid var(--gold-mid);padding:11px 22px;border-radius:4px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;cursor:pointer;transition:all .2s;}
 .btn-out:hover{border-color:var(--gold);background:var(--gold-dim);}
-.hero-vis{display:flex;align-items:center;justify-content:center;position:relative;height:220px;}
-.ring3{width:160px;height:160px;border-radius:50%;background:#c9991a0d;border:1.5px solid #c9991a1a;display:flex;align-items:center;justify-content:center;}
-.ring2{width:110px;height:110px;border-radius:50%;background:#c9991a15;border:1.5px solid #c9991a2a;display:flex;align-items:center;justify-content:center;}
-.ring1{width:68px;height:68px;background:var(--gold);clip-path:polygon(20% 0%,80% 0%,100% 20%,100% 55%,70% 75%,70% 85%,80% 100%,20% 100%,30% 85%,30% 75%,0% 55%,0% 20%);display:flex;align-items:center;justify-content:center;font-size:24px;}
-.fbadge{position:absolute;background:var(--bg4);border:1px solid var(--gold-dim);border-radius:6px;padding:5px 9px;font-size:10px;font-family:'Space Mono',monospace;color:var(--gold);}
-
-/* ===================== STATS ===================== */
+.hero-vis{display:flex;align-items:center;justify-content:center;position:relative;height:240px;}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gold-dim);border-top:1px solid var(--gold-dim);border-bottom:1px solid var(--gold-dim);}
 .stat{background:var(--bg2);padding:18px 24px;text-align:center;}
 .stat-n{font-size:26px;font-weight:900;color:var(--gold);}
 .stat-l{font-size:10px;color:var(--text3);letter-spacing:2px;margin-top:2px;}
-
-/* ===================== SECTIONS ===================== */
 .sec{max-width:960px;margin:0 auto;padding:44px 24px;}
 .sec-tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:6px;}
 .sec-title{font-size:24px;font-weight:900;margin-bottom:28px;}
 .sec-title span{color:var(--gold);}
 .div{height:1px;background:#c9991a0d;}
-
-/* ===================== SERVICES ===================== */
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 .svc-card{background:var(--bg2);border:1px solid #c9991a1a;border-radius:var(--radius);padding:18px;cursor:pointer;transition:all .2s;}
 .svc-card:hover{border-color:var(--gold-mid);background:var(--bg3);}
@@ -75,15 +63,11 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 .svc-name{font-size:13px;font-weight:700;margin-bottom:3px;}
 .svc-desc{font-size:11px;color:var(--text3);line-height:1.5;}
 .svc-price{font-size:12px;color:var(--gold);font-weight:700;margin-top:8px;}
-
-/* ===================== RASTREAMENTO ===================== */
 .track-wrap{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius-lg);padding:28px;}
 .track-input-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
 .track-input{flex:1;min-width:200px;background:var(--bg);border:1px solid var(--gold-dim);border-radius:6px;color:var(--text);padding:10px 14px;font-family:'Exo 2',sans-serif;font-size:13px;outline:none;text-transform:uppercase;}
 .track-input:focus{border-color:var(--gold);}
-.track-result{display:none;}
 .track-status-badge{display:inline-flex;align-items:center;gap:8px;background:#c9991a15;border:1px solid var(--gold-mid);border-radius:6px;padding:10px 16px;font-size:14px;font-weight:700;color:var(--gold);margin-bottom:16px;}
-.track-timeline{display:flex;flex-direction:column;gap:0;}
 .track-step{display:flex;gap:14px;position:relative;}
 .track-step:not(:last-child)::before{content:'';position:absolute;left:15px;top:32px;width:2px;height:calc(100% - 8px);background:var(--gold-dim);}
 .track-dot{width:32px;height:32px;border-radius:50%;background:var(--gold-dim);border:2px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:4px;}
@@ -91,8 +75,6 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 .track-info{padding:4px 0 20px;}
 .track-info strong{display:block;font-size:13px;font-weight:700;margin-bottom:2px;}
 .track-info span{font-size:11px;color:var(--text3);}
-
-/* ===================== CONSÓRCIO ===================== */
 .cons-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
 .cons-info{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius-lg);padding:24px;}
 .cons-step{display:flex;gap:14px;margin-bottom:18px;align-items:flex-start;}
@@ -116,12 +98,9 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 .prog-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .4s;}
 .prog-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:3px;}
 .cons-disclaimer{font-size:10px;color:var(--text4);line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid #c9991a11;}
-
-/* ===================== PRODUCTS ===================== */
 .tabs{display:flex;border-bottom:1px solid var(--gold-dim);margin-bottom:20px;overflow-x:auto;}
 .tab{padding:9px 18px;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;border-top:none;border-left:none;border-right:none;background:none;font-family:'Exo 2',sans-serif;white-space:nowrap;}
 .tab.active{color:var(--gold);border-bottom-color:var(--gold);}
-.tab:hover{color:#c9991a88;}
 .prod-card{background:var(--bg2);border:1px solid #c9991a1a;border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .2s;}
 .prod-card:hover{border-color:var(--gold-mid);transform:translateY(-2px);}
 .prod-img{height:90px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:36px;border-bottom:1px solid #c9991a0d;}
@@ -133,10 +112,8 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 .prod-btns{display:flex;gap:5px;}
 .prod-btn{background:var(--gold);color:var(--bg);border:none;padding:5px 9px;border-radius:4px;font-size:10px;font-family:'Exo 2',sans-serif;font-weight:700;cursor:pointer;transition:background .2s;}
 .prod-btn:hover{background:var(--gold2);}
-.prod-btn.sec{background:transparent;color:var(--gold);border:1px solid var(--gold-mid);font-size:10px;}
+.prod-btn.sec{background:transparent;color:var(--gold);border:1px solid var(--gold-mid);}
 .prod-btn.sec:hover{background:var(--gold-dim);border-color:var(--gold);}
-
-/* ===================== AVALIAÇÕES ===================== */
 .aval-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 .aval-card{background:var(--bg2);border:1px solid #c9991a1a;border-radius:var(--radius);padding:16px;}
 .aval-stars{color:var(--gold);font-size:14px;margin-bottom:8px;}
@@ -144,9 +121,6 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 .aval-name{font-size:11px;color:var(--text3);font-family:'Space Mono',monospace;}
 .aval-media{display:flex;align-items:center;gap:16px;background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius);padding:16px;margin-bottom:20px;}
 .aval-media-num{font-size:48px;font-weight:900;color:var(--gold);line-height:1;}
-.aval-media-info small{font-size:11px;color:var(--text3);}
-
-/* ===================== FORMULÁRIO ===================== */
 .form-wrap{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius-lg);padding:28px;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .fg{display:flex;flex-direction:column;gap:5px;}
@@ -158,15 +132,11 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 .fg textarea{resize:vertical;min-height:70px;}
 .form-foot{display:flex;gap:10px;align-items:center;margin-top:18px;flex-wrap:wrap;}
 .form-note{font-size:11px;color:var(--text4);}
-
-/* ===================== AGENDA ===================== */
 .agenda-wrap{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius-lg);padding:28px;}
 .agenda-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .horarios{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px;}
 .horario-btn{background:var(--bg);border:1px solid var(--gold-dim);border-radius:4px;color:var(--text2);padding:8px 4px;font-family:'Exo 2',sans-serif;font-size:11px;cursor:pointer;transition:all .2s;text-align:center;}
 .horario-btn:hover,.horario-btn.sel{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:700;}
-
-/* ===================== SOCIAL BAR ===================== */
 .social-bar{display:flex;gap:12px;justify-content:center;padding:20px 24px;background:#090909;border-top:1px solid #c9991a11;flex-wrap:wrap;}
 .social-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:6px;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer;text-decoration:none;border:1.5px solid transparent;transition:all .2s;}
 .social-btn.wa{background:#25d36615;border-color:#25d36633;color:var(--green);}
@@ -176,12 +146,64 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 .footer{background:#090909;border-top:1px solid #c9991a11;padding:20px 24px;text-align:center;font-size:11px;color:var(--text4);letter-spacing:1px;}
 .footer span{color:var(--gold);}
 .wa-float{position:fixed;bottom:20px;right:20px;z-index:200;width:48px;height:48px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:white;border:none;box-shadow:0 4px 20px #25d36644;text-decoration:none;}
-
-/* ===================== TOAST ===================== */
-.toast{position:fixed;bottom:80px;right:20px;background:var(--bg2);border:1px solid var(--gold-mid);border-radius:var(--radius);padding:12px 18px;font-size:12px;color:var(--text);z-index:300;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;}
+.toast{position:fixed;bottom:80px;right:20px;background:var(--bg2);border:1px solid var(--gold-mid);border-radius:var(--radius);padding:12px 18px;font-size:12px;color:var(--text);z-index:300;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;max-width:280px;}
 .toast.show{opacity:1;transform:translateY(0);}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:#000000cc;z-index:500;display:none;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius-lg);width:100%;max-width:440px;max-height:90vh;overflow-y:auto;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--gold-dim);}
+.modal-header h2{font-size:16px;font-weight:900;letter-spacing:1px;}
+.modal-close{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;line-height:1;}
+.modal-body{padding:24px;}
+.modal-tabs{display:flex;border-bottom:1px solid var(--gold-dim);margin-bottom:20px;}
+.modal-tab{flex:1;padding:10px;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Exo 2',sans-serif;}
+.modal-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.modal-form{display:flex;flex-direction:column;gap:12px;}
+.modal-form .fg input{width:100%;background:var(--bg);border:1px solid var(--gold-dim);border-radius:6px;color:var(--text);padding:10px 14px;font-family:'Exo 2',sans-serif;font-size:13px;outline:none;}
+.modal-form .fg input:focus{border-color:var(--gold);}
+.modal-err{font-size:12px;color:var(--red);text-align:center;display:none;margin-top:4px;}
+.modal-err.show{display:block;}
+/* CHECKOUT */
+.checkout-steps{display:flex;gap:0;margin-bottom:24px;}
+.ck-step{flex:1;text-align:center;font-size:10px;letter-spacing:1px;color:var(--text3);padding:8px 4px;border-bottom:2px solid var(--gold-dim);transition:all .2s;}
+.ck-step.active{color:var(--gold);border-bottom-color:var(--gold);}
+.ck-panel{display:none;}
+.ck-panel.active{display:block;}
+.pay-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.pay-method{background:var(--bg);border:1.5px solid var(--gold-dim);border-radius:var(--radius);padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s;}
+.pay-method:hover,.pay-method.sel{border-color:var(--gold);background:var(--gold-dim);}
+.pay-method-icon{font-size:24px;margin-bottom:6px;}
+.pay-method-name{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--text2);}
+.pay-method.sel .pay-method-name{color:var(--gold);}
+.pix-box{background:var(--bg);border:1px solid var(--gold-mid);border-radius:var(--radius);padding:20px;text-align:center;}
+.pix-qr{width:160px;height:160px;background:white;border-radius:var(--radius);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#333;padding:8px;}
+.pix-copy{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:6px;padding:8px 12px;font-size:11px;font-family:'Space Mono',monospace;color:var(--gold);word-break:break-all;cursor:pointer;text-align:left;margin-bottom:10px;}
+.boleto-box{background:var(--bg);border:1px solid var(--gold-mid);border-radius:var(--radius);padding:20px;text-align:center;}
+.card-form{display:flex;flex-direction:column;gap:10px;}
+.card-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.card-form input,.card-form select{width:100%;background:var(--bg);border:1px solid var(--gold-dim);border-radius:6px;color:var(--text);padding:9px 12px;font-family:'Exo 2',sans-serif;font-size:13px;outline:none;}
+.card-form input:focus{border-color:var(--gold);}
+.user-badge{display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--gold-dim);border-radius:var(--radius);padding:10px 14px;margin-bottom:16px;}
+.user-badge-ico{width:32px;height:32px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--bg);flex-shrink:0;}
+.user-badge-info strong{display:block;font-size:12px;font-weight:700;}
+.user-badge-info small{color:var(--text3);font-size:10px;}
+.resumo-item{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid var(--gold-dim);}
+.resumo-item:last-child{border:none;font-weight:700;font-size:14px;}
+.lock-info{background:var(--bg3);border:1px solid #c9991a22;border-radius:6px;padding:10px 14px;font-size:10px;color:var(--text3);line-height:1.6;}
+.lock-info strong{color:var(--text2);}
 
-/* ===================== RESPONSIVE ===================== */
+/* LGPD & SENIOR UI IMPROVEMENTS */
+.fg-check{display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-top:10px;}
+.fg-check input{width:18px;height:18px;accent-color:var(--gold);cursor:pointer;margin-top:2px;}
+.fg-check span{font-size:11px;color:var(--text3);line-height:1.4;}
+.fg-check span a{color:var(--gold);text-decoration:none;font-weight:700;}
+.fg-check span a:hover{text-decoration:underline;}
+
+.btn-gold:disabled{opacity:0.5;cursor:not-allowed;filter:grayscale(1);}
+.form-wrap,.agenda-wrap{transition:transform .3s ease,box-shadow .3s ease;}
+.form-wrap:focus-within,.agenda-wrap:focus-within{transform:translateY(-4px);box-shadow:0 10px 30px rgba(201,153,26,0.1);}
+
 @media(max-width:768px){
   .nav-links,.nav-cta{display:none;}
   .nav-hamburger{display:flex;}
@@ -205,19 +227,17 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 @media(max-width:480px){
   .grid3{grid-template-columns:1fr;}
   .hero h1{font-size:24px;}
-  .stats{grid-template-columns:repeat(3,1fr);}
   .horarios{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <a class="nav-logo" href="#">
     <div class="nav-logo-icon">T</div>
     <div>
-      <div class="nav-logo-text">TOWERTECH</div>
+      <div class="nav-logo-text">TOWERTECH.S.</div>
       <span class="nav-logo-sub">ASSISTÊNCIA TÉCNICA</span>
     </div>
   </a>
@@ -230,6 +250,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
     <a onclick="go('contato')">Contato</a>
   </div>
   <button class="nav-cta" onclick="go('contato')">AGENDAR</button>
+  <div id="navAuth"><button class="nav-login-btn" onclick="openAuth('login')">ENTRAR</button></div>
   <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -241,6 +262,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
   <a onclick="go('loja');toggleMenu()">Loja</a>
   <a onclick="go('avaliacoes');toggleMenu()">Avaliações</a>
   <a onclick="go('contato');toggleMenu()">Contato</a>
+  <a onclick="openAuth('login');toggleMenu()">Entrar / Cadastrar</a>
 </div>
 
 <!-- HERO -->
@@ -255,14 +277,35 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
     </div>
   </div>
   <div class="hero-vis">
-    <div class="ring3"><div class="ring2"><div class="ring1">⚙️</div></div></div>
-    <div class="fbadge" style="top:10px;left:0">✓ Garantia 90d</div>
-    <div class="fbadge" style="top:10px;right:0">⚡ Express 24h</div>
-    <div class="fbadge" style="bottom:10px;left:0">🔧 Diagnóstico grátis</div>
+    <svg viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:320px;height:auto;">
+      <circle cx="160" cy="148" r="78" fill="none" stroke="#c9991a" stroke-width="1" opacity="0.15"/>
+      <circle cx="160" cy="148" r="54" fill="none" stroke="#c9991a" stroke-width="1" opacity="0.25"/>
+      <polygon points="128,108 192,108 204,120 204,158 182,172 182,182 192,200 128,200 138,182 138,172 116,158 116,120" fill="#c9991a"/>
+      <g transform="translate(160,152)">
+        <path d="M-5,-22 L5,-22 L6,-16 L-6,-16 Z" fill="#0d0d0d"/>
+        <path d="M-5,16 L5,16 L6,22 L-6,22 Z" fill="#0d0d0d"/>
+        <path d="M16,-6 L22,-5 L22,5 L16,6 Z" fill="#0d0d0d"/>
+        <path d="M-22,-5 L-16,-6 L-16,6 L-22,5 Z" fill="#0d0d0d"/>
+        <path d="M10,-18 L15,-13 L11,-9 L6,-14 Z" fill="#0d0d0d"/>
+        <path d="M-10,-18 L-15,-13 L-11,-9 L-6,-14 Z" fill="#0d0d0d"/>
+        <path d="M10,14 L15,9 L11,5 L6,10 Z" fill="#0d0d0d"/>
+        <path d="M-10,14 L-15,9 L-11,5 L-6,10 Z" fill="#0d0d0d"/>
+        <circle cx="0" cy="0" r="15" fill="#0d0d0d"/>
+        <circle cx="0" cy="0" r="6" fill="#c9991a"/>
+      </g>
+      <line x1="130" y1="120" x2="52" y2="52" stroke="#c9991a" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+      <rect x="2" y="30" width="108" height="26" rx="5" fill="#1a1a1a" stroke="#c9991a" stroke-width="1" opacity="0.9"/>
+      <text x="56" y="48" text-anchor="middle" font-family="Space Mono,monospace" font-size="10" fill="#c9991a">✓ Garantia 90d</text>
+      <line x1="190" y1="120" x2="268" y2="52" stroke="#c9991a" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+      <rect x="210" y="30" width="108" height="26" rx="5" fill="#1a1a1a" stroke="#c9991a" stroke-width="1" opacity="0.9"/>
+      <text x="264" y="48" text-anchor="middle" font-family="Space Mono,monospace" font-size="10" fill="#c9991a">⚡ Express 24h</text>
+      <line x1="130" y1="180" x2="52" y2="240" stroke="#c9991a" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+      <rect x="2" y="228" width="130" height="26" rx="5" fill="#1a1a1a" stroke="#c9991a" stroke-width="1" opacity="0.9"/>
+      <text x="67" y="246" text-anchor="middle" font-family="Space Mono,monospace" font-size="10" fill="#c9991a">🔧 Diagnóstico grátis</text>
+    </svg>
   </div>
 </div>
 
-<!-- STATS -->
 <div class="stats">
   <div class="stat"><div class="stat-n">500+</div><div class="stat-l">CLIENTES</div></div>
   <div class="stat"><div class="stat-n">98%</div><div class="stat-l">SATISFAÇÃO</div></div>
@@ -275,12 +318,12 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
   <div class="sec-tag">// o que fazemos</div>
   <div class="sec-title">Nossos <span>Serviços</span></div>
   <div class="grid3">
-    <div class="svc-card" onclick="selSvc('Troca de Tela')"><div class="svc-ico">📱</div><div class="svc-name">Troca de Tela</div><div class="svc-desc">Display + touch originais. Troca em até 1h.</div><div class="svc-price">A partir de R$ 150</div></div>
-    <div class="svc-card" onclick="selSvc('Troca de Bateria')"><div class="svc-ico">🔋</div><div class="svc-name">Troca de Bateria</div><div class="svc-desc">Restaure a autonomia com bateria nova.</div><div class="svc-price">A partir de R$ 80</div></div>
-    <div class="svc-card" onclick="selSvc('Manutenção de Notebook')"><div class="svc-ico">💻</div><div class="svc-name">Notebook</div><div class="svc-desc">Limpeza, HD/SSD, pasta térmica e mais.</div><div class="svc-price">A partir de R$ 120</div></div>
-    <div class="svc-card" onclick="selSvc('Recuperação de Dados')"><div class="svc-ico">💾</div><div class="svc-name">Recuperação de Dados</div><div class="svc-desc">Fotos e arquivos recuperados mesmo em aparelhos danificados.</div><div class="svc-price">Sob consulta</div></div>
-    <div class="svc-card" onclick="selSvc('Dano por Líquido')"><div class="svc-ico">💧</div><div class="svc-name">Dano por Líquido</div><div class="svc-desc">Limpeza ultrassônica e troca de componentes.</div><div class="svc-price">A partir de R$ 100</div></div>
-    <div class="svc-card" onclick="selSvc('Diagnóstico Geral')"><div class="svc-ico">🔍</div><div class="svc-name">Diagnóstico Geral</div><div class="svc-desc">Não sabe o que está errado? Orçamento sem compromisso.</div><div class="svc-price">Gratuito</div></div>
+    <div class="svc-card" onclick="selSvc('Troca de Tela')"><div class="svc-ico">📱</div><div class="svc-name">Troca de Tela</div><div class="svc-desc">Display + touch originais. Troca em até 1h.</div><div class="svc-price">💬 Valor sob consulta</div></div>
+    <div class="svc-card" onclick="selSvc('Troca de Bateria')"><div class="svc-ico">🔋</div><div class="svc-name">Troca de Bateria</div><div class="svc-desc">Restaure a autonomia com bateria nova.</div><div class="svc-price">💬 Valor sob consulta</div></div>
+    <div class="svc-card" onclick="selSvc('Manutenção de Notebook')"><div class="svc-ico">💻</div><div class="svc-name">Notebook</div><div class="svc-desc">Limpeza, HD/SSD, pasta térmica e mais.</div><div class="svc-price">💬 Valor sob consulta</div></div>
+    <div class="svc-card" onclick="selSvc('Recuperação de Dados')"><div class="svc-ico">💾</div><div class="svc-name">Recuperação de Dados</div><div class="svc-desc">Fotos e arquivos recuperados mesmo em aparelhos danificados.</div><div class="svc-price">💬 Valor sob consulta</div></div>
+    <div class="svc-card" onclick="selSvc('Dano por Líquido')"><div class="svc-ico">💧</div><div class="svc-name">Dano por Líquido</div><div class="svc-desc">Limpeza ultrassônica e troca de componentes.</div><div class="svc-price">💬 Valor sob consulta</div></div>
+    <div class="svc-card" onclick="selSvc('Diagnóstico Geral')"><div class="svc-ico">🔍</div><div class="svc-name">Diagnóstico Geral</div><div class="svc-desc">Não sabe o que está errado? Orçamento sem compromisso.</div><div class="svc-price">✅ Gratuito</div></div>
   </div>
 </section>
 <div class="div"></div>
@@ -294,20 +337,20 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
       <input class="track-input" id="trackCod" placeholder="Digite o código da OS (ex: OS-2025-00001)" maxlength="20"/>
       <button class="btn-gold" onclick="rastrear()">RASTREAR</button>
     </div>
-    <div class="track-result" id="trackResult"></div>
+    <div id="trackResult"></div>
   </div>
 </section>
 <div class="div"></div>
 
 <!-- CONSÓRCIO -->
 <section id="consorcio" class="sec">
-  <div class="sec-tag">// novidade towertech</div>
-  <div class="sec-title">Consórcio <span>TowerTech</span></div>
+  <div class="sec-tag">// novidade towertech.s.</div>
+  <div class="sec-title">Consórcio <span>TowerTech.s.</span></div>
   <div class="cons-layout">
     <div class="cons-info">
       <div class="cons-step"><div class="cons-num">1</div><div class="cons-step-text"><strong>Escolha seu aparelho</strong><span>Selecione o produto desejado. Sem burocracia, sem análise de crédito.</span></div></div>
       <div class="cons-step"><div class="cons-num">2</div><div class="cons-step-text"><strong>Pague no seu ritmo</strong><span>Semanal, quinzenal ou mensal. Você escolhe o valor das parcelas.</span></div></div>
-      <div class="cons-step"><div class="cons-num">3</div><div class="cons-step-text"><strong>Receba ao atingir 70%</strong><span>Com 70% pago o aparelho é seu! Continue pagando o restante com o produto em mãos.</span></div></div>
+      <div class="cons-step"><div class="cons-num">3</div><div class="cons-step-text"><strong>Receba ao atingir 70%</strong><span>Com 70% pago o aparelho é seu! Continue pagando o restante com ele em mãos.</span></div></div>
       <div class="cons-step" style="margin-bottom:0"><div class="cons-num">4</div><div class="cons-step-text"><strong>Desistiu? Devolução 100%</strong><span>Se precisar sair, devolvemos todo o valor pago. Sem letras miúdas.</span></div></div>
     </div>
     <div class="cons-calc">
@@ -321,7 +364,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
           <option value="0">Outro valor</option>
         </select>
       </div>
-      <div class="calc-row" id="customRow" style="display:none"><div class="calc-label">Valor (R$)</div><input type="number" id="ccCustom" placeholder="Ex: 1500" oninput="calcCons()"/></div>
+      <div class="calc-row" id="customRow" style="display:none"><div class="calc-label">Valor (R$)</div><input type="number" id="ccCustom" placeholder="Ex: 1500" oninput="calcCons()" inputmode="numeric"/></div>
       <div class="calc-row"><div class="calc-label">Frequência</div>
         <select id="ccFreq" onchange="calcCons()">
           <option value="30">Mensal</option>
@@ -329,7 +372,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
           <option value="7">Semanal</option>
         </select>
       </div>
-      <div class="calc-row"><div class="calc-label">Valor por parcela (R$)</div><input type="number" id="ccParc" placeholder="Ex: 200" oninput="calcCons()"/></div>
+      <div class="calc-row"><div class="calc-label">Valor por parcela (R$)</div><input type="number" id="ccParc" placeholder="Ex: 200" oninput="calcCons()" inputmode="numeric"/></div>
       <div class="calc-result">
         <div class="calc-result-row"><span class="lbl">Valor total</span><span class="val" id="rTotal">—</span></div>
         <div class="calc-result-row"><span class="lbl">Para contemplação (70%)</span><span class="val" id="r70">—</span></div>
@@ -348,7 +391,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 <!-- LOJA -->
 <section id="loja" class="sec">
   <div class="sec-tag">// produtos</div>
-  <div class="sec-title">Loja <span>TowerTech</span></div>
+  <div class="sec-title">Loja <span>TowerTech.s.</span></div>
   <div class="tabs">
     <button class="tab active" onclick="filterP(this,'todos')">TODOS</button>
     <button class="tab" onclick="filterP(this,'celular')">CELULARES</button>
@@ -372,14 +415,9 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
   <div class="sec-title">Avaliações <span>Reais</span></div>
   <div class="aval-media" id="avalMedia">
     <div class="aval-media-num" id="avalNota">—</div>
-    <div class="aval-media-info">
-      <div style="color:var(--gold);font-size:20px" id="avalStars">⭐⭐⭐⭐⭐</div>
-      <small id="avalTotal">Carregando avaliações...</small>
-    </div>
+    <div><div style="color:var(--gold);font-size:20px" id="avalStars">⭐⭐⭐⭐⭐</div><small id="avalTotal" style="font-size:11px;color:var(--text3)">Carregando...</small></div>
   </div>
-  <div class="aval-grid" id="avalGrid">
-    <div class="aval-card" style="grid-column:1/-1;text-align:center;color:var(--text3);padding:32px">Carregando avaliações...</div>
-  </div>
+  <div class="aval-grid" id="avalGrid"><div class="aval-card" style="grid-column:1/-1;text-align:center;color:var(--text3);padding:32px">Carregando avaliações...</div></div>
 </section>
 <div class="div"></div>
 
@@ -390,7 +428,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
   <div class="agenda-wrap">
     <div class="agenda-grid">
       <div class="fg"><label>Nome</label><input type="text" id="agNome" placeholder="Seu nome"/></div>
-      <div class="fg"><label>WhatsApp</label><input type="text" id="agTel" placeholder="(19) 99999-9999"/></div>
+      <div class="fg"><label>WhatsApp</label><input type="tel" id="agTel" placeholder="(19) 99999-9999" inputmode="numeric"/></div>
       <div class="fg"><label>Aparelho</label><input type="text" id="agApar" placeholder="Ex: iPhone 13, Samsung A54"/></div>
       <div class="fg"><label>Data</label><input type="date" id="agData" min=""/></div>
     </div>
@@ -407,8 +445,14 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
       </div>
     </div>
     <div class="fg" style="margin-top:14px"><label>Problema</label><textarea id="agProb" placeholder="Descreva o problema do aparelho..." style="min-height:60px"></textarea></div>
+    
+    <label class="fg-check">
+      <input type="checkbox" id="agLgpd"/>
+      <span>Estou de acordo com a <a href="#">Política de Privacidade</a> e autorizo o processamento dos meus dados para fins de agendamento e contato via WhatsApp, conforme a LGPD.</span>
+    </label>
+
     <div class="form-foot" style="margin-top:18px">
-      <button class="btn-gold" onclick="agendar()">CONFIRMAR AGENDAMENTO</button>
+      <button class="btn-gold" id="btnAgendar" onclick="agendar()">CONFIRMAR AGENDAMENTO</button>
       <span class="form-note">Confirmaremos pelo WhatsApp em breve</span>
     </div>
   </div>
@@ -422,7 +466,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
   <div class="form-wrap">
     <div class="form-grid">
       <div class="fg"><label>Nome</label><input type="text" id="fn" placeholder="Seu nome completo"/></div>
-      <div class="fg"><label>WhatsApp</label><input type="text" id="fp" placeholder="(19) 99999-9999"/></div>
+      <div class="fg"><label>Celular</label><input type="tel" id="fp" placeholder="(19) 99999-9999" inputmode="numeric"/></div>
       <div class="fg"><label>Aparelho</label>
         <select id="fd"><option value="">Selecione</option><option>Smartphone</option><option>Notebook / PC</option><option>Tablet</option><option>Videogame / Console</option><option>Outro</option></select>
       </div>
@@ -430,9 +474,44 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
         <select id="fs"><option value="">Selecione</option><option>Troca de Tela</option><option>Troca de Bateria</option><option>Manutenção de Notebook</option><option>Recuperação de Dados</option><option>Dano por Líquido</option><option>Diagnóstico Geral</option><option>Outro</option></select>
       </div>
       <div class="fg full"><label>Descreva o problema</label><textarea id="fdesc" placeholder="Ex: tela quebrada, bateria murchando..."></textarea></div>
+      <div class="fg full"><label>Tipo de bloqueio do aparelho</label>
+        <select id="fLockType" onchange="onLockType()">
+          <option value="">Sem bloqueio / Não informar</option>
+          <option value="pin">PIN (número)</option>
+          <option value="senha">Senha escrita</option>
+          <option value="padrao">Padrão de desenho</option>
+        </select>
+      </div>
+      <div class="fg full" id="fLockPinWrap" style="display:none">
+        <label>PIN do aparelho</label>
+        <input type="number" id="fLockPin" placeholder="Ex: 1234" inputmode="numeric"/>
+      </div>
+      <div class="fg full" id="fLockSenhaWrap" style="display:none">
+        <label>Senha do aparelho</label>
+        <input type="text" id="fLockSenha" placeholder="Digite a senha"/>
+      </div>
+      <div class="fg full" id="fLockPadraoWrap" style="display:none">
+        <label>Padrão de desenho</label>
+        <div style="background:var(--bg);border:1px solid var(--gold-dim);border-radius:8px;padding:16px;text-align:center">
+          <p style="font-size:11px;color:var(--text3);margin-bottom:12px">Toque nos pontos na ordem do seu padrão:</p>
+          <canvas id="patternCanvas" width="200" height="200" style="touch-action:none;cursor:crosshair;border-radius:4px;max-width:200px;"></canvas>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap">
+            <button type="button" class="btn-out" style="padding:6px 14px;font-size:11px" onclick="clearPattern()">LIMPAR</button>
+            <span id="patternLabel" style="font-size:11px;color:var(--text3);align-self:center">Nenhum padrão</span>
+          </div>
+        </div>
+      </div>
+      <div class="fg full lock-info">
+        🔒 <strong>Segurança:</strong> A senha é usada apenas para diagnóstico e reparo. Recomendamos alterar após a retirada do aparelho.
+      </div>
+
+      <label class="fg-check full">
+        <input type="checkbox" id="fLgpd"/>
+        <span>Autorizo a TowerTech.s. a coletar meus dados pessoais e informações do aparelho para fins de manutenção e orçamento, ciente de que o contato será realizado via WhatsApp. <a href="#">Ver Termos LGPD</a></span>
+      </label>
     </div>
     <div class="form-foot">
-      <button class="btn-gold" onclick="sendWA()">📲 ENVIAR PELO WHATSAPP</button>
+      <button class="btn-gold" id="btnSendWA" onclick="sendWA()">📲 ENVIAR PELO WHATSAPP</button>
       <span class="form-note">Você será redirecionado ao WhatsApp</span>
     </div>
   </div>
@@ -443,182 +522,805 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
   <a class="social-btn wa" href="https://wa.me/5519982608656" target="_blank">📱 (19) 98260-8656</a>
   <a class="social-btn ig" href="https://www.instagram.com/towertech_s/" target="_blank">📸 @towertech_s</a>
 </div>
-<div class="footer"><p>© 2025 <span>TowerTech</span> Assistência Técnica — Sumaré, SP</p></div>
-<a class="wa-float" href="https://wa.me/5519982608656?text=Olá!%20Vim%20pelo%20site%20da%20TowerTech." target="_blank">📱</a>
+<div class="footer"><p>© 2025 <span>TowerTech.s.</span> Assistência Técnica — Sumaré, SP</p></div>
+<a class="wa-float" href="https://wa.me/5519982608656?text=Olá!%20Vim%20pelo%20site%20da%20TowerTech.s." target="_blank">📱</a>
 <div class="toast" id="toast"></div>
 
+<!-- MODAL AUTH -->
+<div class="modal-overlay" id="modalAuth">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>ENTRAR / CADASTRAR</h2>
+      <button class="modal-close" onclick="closeAuth()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tabs">
+        <button class="modal-tab active" id="tabLogin" onclick="switchAuth('login')">ENTRAR</button>
+        <button class="modal-tab" id="tabCad" onclick="switchAuth('cadastro')">CRIAR CONTA</button>
+      </div>
+      <div id="formLogin">
+        <div class="modal-form">
+          <div class="fg"><label>E-mail</label><input type="email" id="lEmail" placeholder="seu@email.com"/></div>
+          <div class="fg"><label>Senha</label><input type="password" id="lSenha" placeholder="••••••"/></div>
+          <div class="modal-err" id="loginErr"></div>
+          <button class="btn-gold" style="width:100%" onclick="doLogin()">ENTRAR</button>
+        </div>
+        <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--text3)">Não tem conta? <span style="color:var(--gold);cursor:pointer" onclick="switchAuth('cadastro')">Cadastre-se grátis</span></p>
+      </div>
+      <div id="formCad" style="display:none">
+        <div class="modal-form">
+          <div class="fg"><label>Nome completo</label><input type="text" id="cNome" placeholder="Seu nome"/></div>
+          <div class="fg"><label>E-mail</label><input type="email" id="cEmail" placeholder="seu@email.com"/></div>
+          <div class="fg"><label>Celular</label><input type="tel" id="cTel" placeholder="(19) 99999-9999" inputmode="numeric"/></div>
+          <div class="fg"><label>CPF </label><input type="tel" id="cCpf" placeholder="000.000.000-00" inputmode="numeric"/></div>
+          <div class="fg"><label>Senha</label><input type="password" id="cSenha" placeholder="Mínimo 6 caracteres"/></div>
+          <div class="modal-err" id="cadErr"></div>
+          <button class="btn-gold" style="width:100%" onclick="doCadastro()">CRIAR CONTA</button>
+        </div>
+        <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--text3)">Já tem conta? <span style="color:var(--gold);cursor:pointer" onclick="switchAuth('login')">Entrar</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CHECKOUT -->
+<div class="modal-overlay" id="modalCheckout">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <h2>FINALIZAR COMPRA</h2>
+      <button class="modal-close" onclick="closeCheckout()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="checkout-steps">
+        <div class="ck-step active" id="ckStep1">1. PRODUTO</div>
+        <div class="ck-step" id="ckStep2">2. PAGAMENTO</div>
+        <div class="ck-step" id="ckStep3">3. CONFIRMAÇÃO</div>
+      </div>
+      <div class="ck-panel active" id="ckPanel1">
+        <div id="ckResumo"></div>
+        <div style="margin-top:20px">
+          <div id="ckUserInfo"></div>
+          <button class="btn-gold" style="width:100%" onclick="goStep(2)">CONTINUAR PARA PAGAMENTO →</button>
+        </div>
+      </div>
+      <div class="ck-panel" id="ckPanel2">
+        <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Escolha como pagar:</p>
+        <div class="pay-methods">
+          <div class="pay-method" onclick="selMetodo('pix',this)"><div class="pay-method-icon">📱</div><div class="pay-method-name">PIX</div></div>
+          <div class="pay-method" onclick="selMetodo('boleto',this)"><div class="pay-method-icon">🏦</div><div class="pay-method-name">BOLETO</div></div>
+          <div class="pay-method" onclick="selMetodo('cartao',this)"><div class="pay-method-icon">💳</div><div class="pay-method-name">CARTÃO</div></div>
+        </div>
+        <div id="formPix" style="display:none">
+          <button class="btn-gold" style="width:100%;margin-bottom:12px" onclick="gerarPix()">GERAR QR CODE PIX</button>
+          <div class="pix-box" id="pixBox" style="display:none">
+            <div class="pix-qr" id="pixQr">Carregando QR Code...</div>
+            <div class="pix-copy" id="pixCopy" onclick="copiarPix()">Clique para copiar o código PIX</div>
+            <p style="font-size:11px;color:var(--text3)">⏱ Válido por 30 min. Confirmação automática.</p>
+          </div>
+        </div>
+        <div id="formBoleto" style="display:none">
+          <button class="btn-gold" style="width:100%;margin-bottom:12px" onclick="gerarBoleto()">GERAR BOLETO</button>
+          <div class="boleto-box" id="boletoBox" style="display:none">
+            <p style="font-size:12px;color:var(--text2);margin-bottom:10px">Boleto gerado! Vence em 3 dias úteis.</p>
+            <button class="btn-gold" style="width:100%" id="boletoLink">ABRIR BOLETO</button>
+          </div>
+        </div>
+        <div id="formCartao" style="display:none">
+          <div class="card-form">
+            <div class="fg"><label style="font-size:10px;letter-spacing:2px;color:var(--text2);text-transform:uppercase">Número do cartão</label><input type="tel" id="cardNum" placeholder="0000 0000 0000 0000" inputmode="numeric" maxlength="19" oninput="fmtCard(this)"/></div>
+            <div class="fg"><label style="font-size:10px;letter-spacing:2px;color:var(--text2);text-transform:uppercase">Nome no cartão</label><input type="text" id="cardNome" placeholder="NOME SOBRENOME"/></div>
+            <div class="card-row">
+              <div class="fg"><label style="font-size:10px;letter-spacing:2px;color:var(--text2);text-transform:uppercase">Validade</label><input type="tel" id="cardVal" placeholder="MM/AA" inputmode="numeric" maxlength="5"/></div>
+              <div class="fg"><label style="font-size:10px;letter-spacing:2px;color:var(--text2);text-transform:uppercase">CVV</label><input type="tel" id="cardCvv" placeholder="000" inputmode="numeric" maxlength="4"/></div>
+            </div>
+            <select id="cardParc"><option value="1">1x sem juros</option><option value="2">2x sem juros</option><option value="3">3x sem juros</option><option value="6">6x sem juros</option><option value="12">12x com juros</option></select>
+            <p style="font-size:10px;color:var(--text3)">🔒 Processado pelo Mercado Pago com segurança.</p>
+            <button class="btn-gold" onclick="pagarCartao()">PAGAR AGORA</button>
+          </div>
+        </div>
+        <div style="margin-top:16px"><button class="btn-out" style="width:100%" onclick="goStep(1)">← VOLTAR</button></div>
+      </div>
+      <div class="ck-panel" id="ckPanel3" style="text-align:center;padding:20px 0">
+        <div style="font-size:48px;margin-bottom:16px">✅</div>
+        <h3 style="font-size:18px;font-weight:900;color:var(--gold);margin-bottom:8px">Pedido Confirmado!</h3>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px" id="ckConfMsg">Seu pagamento foi recebido. Entraremos em contato pelo WhatsApp em breve!</p>
+        <button class="btn-gold" onclick="closeCheckout()">FECHAR</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-const WA='5519982608656';
-const API='https://towertech-backend-production.up.railway.app';
+/**
+ * TowerTech.s. - Main Application Script
+ * Level: Senior Refactor
+ * Compliance: LGPD (General Data Protection Law - Brazil)
+ */
 
-function go(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});}
-function toggleMenu(){document.getElementById('navMobile').classList.toggle('open');}
-
-function toast(msg,ms=3000){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),ms);
-}
-
-function selSvc(s){
-  document.getElementById('fs').value=s;
-  go('contato');
-}
-
-// ── RASTREAMENTO ──
-async function rastrear(){
-  const cod=document.getElementById('trackCod').value.trim().toUpperCase();
-  if(!cod){toast('Digite o código da OS');return;}
-  const res=document.getElementById('trackResult');
-  res.style.display='block';
-  res.innerHTML='<div style="color:var(--text3);font-size:13px">🔍 Buscando...</div>';
-  try{
-    const r=await fetch(`${API}/api/rastreamento/${cod}`);
-    if(!r.ok)throw new Error('não encontrada');
-    const d=await r.json();
-    const steps=d.historico.map(h=>`
-      <div class="track-step">
-        <div class="track-dot active">${h.emoji||'📌'}</div>
-        <div class="track-info"><strong>${h.status}</strong><span>${h.observacao} · ${new Date(h.data).toLocaleDateString('pt-BR')}</span></div>
-      </div>`).join('');
-    res.innerHTML=`
-      <div class="track-status-badge">${d.statusEmoji} ${d.statusDesc}</div>
-      <div class="track-timeline">${steps}</div>`;
-  }catch(e){
-    res.innerHTML=`<div style="color:var(--red);font-size:13px">❌ OS não encontrada. Verifique o código e tente novamente.</div>`;
+const CONFIG = {
+  WA_NUMBER: '5519982608656',
+  API_BASE: 'https://towertech-backend-production.up.railway.app',
+  STORAGE_KEYS: {
+    TOKEN: 'tt_token',
+    USER: 'tt_user'
   }
-}
+};
 
-// ── CONSÓRCIO CALC ──
-function calcCons(){
-  const sel=document.getElementById('ccProd');
-  const freq=parseInt(document.getElementById('ccFreq').value);
-  document.getElementById('customRow').style.display=sel.value==='0'?'block':'none';
-  let total=parseInt(sel.value)||0;
-  if(sel.value==='0')total=parseInt(document.getElementById('ccCustom').value)||0;
-  const parc=parseFloat(document.getElementById('ccParc').value)||0;
-  const meta=Math.ceil(total*0.7);
-  document.getElementById('rTotal').textContent=total?'R$ '+total.toLocaleString('pt-BR'):'—';
-  document.getElementById('r70').textContent=meta?'R$ '+meta.toLocaleString('pt-BR'):'—';
-  if(total&&parc&&freq){
-    const n=Math.ceil(meta/parc);
-    const dias=n*freq;
-    let tempo=freq===30?n+' meses':freq===15?Math.ceil(n/2)+' meses':'~'+Math.ceil(dias/30)+' meses';
-    document.getElementById('rParc').textContent=n+' parcelas de R$ '+parc.toLocaleString('pt-BR');
-    document.getElementById('rTempo').textContent=tempo;
-    const pct=Math.min(100,Math.round((parc/meta)*100));
-    document.getElementById('prog').style.width=pct+'%';
-    document.getElementById('progMeta').textContent='Meta: R$ '+meta.toLocaleString('pt-BR');
-  }
-}
+const App = {
+  state: {
+    authToken: null,
+    authUser: null,
+    ckPendente: null,
+    ckProduto: { nome: '', preco: 0, consorcioId: null },
+    ckMetodo: '',
+    horaSel: '',
+    pattern: {
+      sequence: [],
+      drawing: false,
+      ctx: null,
+      dots: [],
+      inited: false
+    }
+  },
 
-function consWhats(){
-  const prod=document.getElementById('ccProd');
-  const freq=document.getElementById('ccFreq');
-  const parc=document.getElementById('ccParc').value;
-  const msg=encodeURIComponent('🏆 *Interesse em Consórcio TowerTech*\n\n📦 Produto: '+prod.options[prod.selectedIndex].text+'\n📅 Frequência: '+freq.options[freq.selectedIndex].text+(parc?'\n💰 Parcela: R$ '+parc:'')+'\n\nQuero mais informações!');
-  window.open('https://wa.me/'+WA+'?text='+msg,'_blank');
-}
+  // ── CORE UTILS ──
+  init() {
+    this.initAuth();
+    this.initListeners();
+    this.loadExternalData();
+    this.setupDateMin();
+    console.log('🚀 TowerTech App Initialized');
+  },
 
-function consProd(btn){
-  const c=btn.closest('.prod-card');
-  const opts=document.getElementById('ccProd').options;
-  let found=false;
-  for(let o of opts){if(o.value===c.dataset.price){document.getElementById('ccProd').value=c.dataset.price;found=true;break;}}
-  if(!found){document.getElementById('ccProd').value='0';document.getElementById('ccCustom').value=c.dataset.price;}
-  calcCons();go('consorcio');
-}
+  initListeners() {
+    document.getElementById('modalAuth').addEventListener('click', (e) => {
+      if (e.target.id === 'modalAuth') App.closeAuth();
+    });
+    document.getElementById('modalCheckout').addEventListener('click', (e) => {
+      if (e.target.id === 'modalCheckout') App.closeCheckout();
+    });
+  },
 
-// ── PRODUTOS ──
-function filterP(btn,cat){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.prod-card').forEach(c=>{c.style.display=(cat==='todos'||c.dataset.cat===cat)?'block':'none';});
-}
-function buyP(btn){
-  const c=btn.closest('.prod-card');
-  const msg=encodeURIComponent('Olá! Tenho interesse em: '+c.dataset.name+' (R$ '+parseInt(c.dataset.price).toLocaleString('pt-BR')+'). Ainda disponível?');
-  window.open('https://wa.me/'+WA+'?text='+msg,'_blank');
-}
+  loadExternalData() {
+    this.loadAvaliacoes();
+    this.calcCons();
+  },
 
-// ── AVALIAÇÕES (conectado à API) ──
-async function loadAvaliacoes(){
-  try{
-    const r=await fetch(`${API}/api/avaliacoes`);
-    const d=await r.json();
-    document.getElementById('avalNota').textContent=d.mediaGeral;
-    document.getElementById('avalTotal').textContent=d.total+' avaliações';
-    const stars='⭐'.repeat(Math.round(parseFloat(d.mediaGeral)||5));
-    document.getElementById('avalStars').textContent=stars;
-    const grid=document.getElementById('avalGrid');
-    if(d.avaliacoes.length===0){
-      grid.innerHTML='<div class="aval-card" style="grid-column:1/-1;text-align:center;color:var(--text3);padding:32px">Seja o primeiro a avaliar! ⭐</div>';
+  setupDateMin() {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const dateInput = document.getElementById('agData');
+    if (dateInput) dateInput.min = tomorrow.toISOString().split('T')[0];
+  },
+
+  go(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  },
+
+  toggleMenu() {
+    document.getElementById('navMobile').classList.toggle('open');
+  },
+
+  toast(msg, ms = 3000) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), ms);
+  },
+
+  // ── LGPD COMPLIANCE ──
+  validateLgpd(checkboxId) {
+    const cb = document.getElementById(checkboxId);
+    if (!cb || !cb.checked) {
+      this.toast('⚠️ Você precisa aceitar os termos da LGPD para continuar.');
+      return false;
+    }
+    return true;
+  },
+
+  // ── AUTHENTICATION ──
+  initAuth() {
+    const token = localStorage.getItem(CONFIG.STORAGE_KEYS.TOKEN);
+    const user = localStorage.getItem(CONFIG.STORAGE_KEYS.USER);
+    if (token && user) {
+      this.state.authToken = token;
+      this.state.authUser = JSON.parse(user);
+      this.renderNavUser();
+    }
+  },
+
+  renderNavUser() {
+    const el = document.getElementById('navAuth');
+    if (this.state.authUser) {
+      el.innerHTML = `
+        <div class="nav-user" onclick="App.logout()">
+          <div class="nav-user-ico">${this.state.authUser.nome[0].toUpperCase()}</div>
+          <span class="nav-user-name">${this.state.authUser.nome.split(' ')[0]} ↩</span>
+        </div>`;
+    } else {
+      el.innerHTML = '<button class="nav-login-btn" onclick="App.openAuth(\'login\')">ENTRAR</button>';
+    }
+  },
+
+  openAuth(tab = 'login') {
+    document.getElementById('modalAuth').classList.add('open');
+    this.switchAuth(tab);
+  },
+
+  closeAuth() {
+    document.getElementById('modalAuth').classList.remove('open');
+  },
+
+  switchAuth(tab) {
+    document.getElementById('formLogin').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('formCad').style.display = tab === 'cadastro' ? 'block' : 'none';
+    document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+    document.getElementById('tabCad').classList.toggle('active', tab === 'cadastro');
+    document.getElementById('loginErr').classList.remove('show');
+    document.getElementById('cadErr').classList.remove('show');
+  },
+
+  async doLogin() {
+    const email = document.getElementById('lEmail').value.trim();
+    const senha = document.getElementById('lSenha').value;
+    const err = document.getElementById('loginErr');
+
+    if (!email || !senha) {
+      this.showErr(err, 'Preencha e-mail e senha.');
       return;
     }
-    grid.innerHTML=d.avaliacoes.slice(0,6).map(a=>`
-      <div class="aval-card">
-        <div class="aval-stars">${'⭐'.repeat(a.nota)}</div>
-        <div class="aval-text">${a.comentario||'Ótimo serviço!'}</div>
-        <div class="aval-name">${a.nome}</div>
-      </div>`).join('');
-  }catch(e){
-    document.getElementById('avalGrid').innerHTML='<div class="aval-card" style="grid-column:1/-1;text-align:center;color:var(--text3);padding:32px">Sem avaliações ainda. Seja o primeiro! ⭐</div>';
-  }
-}
 
-// ── AGENDAMENTO (conectado à API) ──
-let horaSel='';
-function selHora(btn){
-  document.querySelectorAll('.horario-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');horaSel=btn.textContent;
-}
-async function agendar(){
-  const nome=document.getElementById('agNome').value.trim();
-  const tel=document.getElementById('agTel').value.trim();
-  const apar=document.getElementById('agApar').value.trim();
-  const data=document.getElementById('agData').value;
-  const prob=document.getElementById('agProb').value.trim();
-  if(!nome||!apar||!data||!horaSel){toast('Preencha nome, aparelho, data e horário');return;}
-  try{
-    const r=await fetch(`${API}/api/agendamento`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({data,horario:horaSel+':00',aparelho:apar,descricaoProblema:prob,clienteNome:nome,clienteTelefone:tel})
+    try {
+      const response = await fetch(`${CONFIG.API_BASE}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, senha })
+      });
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.erro || 'Falha no login');
+
+      this.saveAuth(data);
+      this.closeAuth();
+      this.toast(`Bem-vindo, ${data.nome}! ✅`);
+
+      if (this.state.ckPendente) {
+        const p = this.state.ckPendente;
+        this.state.ckPendente = null;
+        this.abrirCheckout(p.nome, p.preco, p.consorcioId);
+      }
+    } catch (e) {
+      this.showErr(err, e.message || 'Erro de conexão.');
+    }
+  },
+
+  async doCadastro() {
+    const nome = document.getElementById('cNome').value.trim();
+    const email = document.getElementById('cEmail').value.trim();
+    const telefone = document.getElementById('cTel').value.trim();
+    const cpf = document.getElementById('cCpf').value.trim();
+    const senha = document.getElementById('cSenha').value;
+    const err = document.getElementById('cadErr');
+
+    if (!nome || !email || !telefone || !senha) {
+      this.showErr(err, 'Preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${CONFIG.API_BASE}/api/auth/cadastro`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, telefone, cpf, senha })
+      });
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.erro || 'Erro ao cadastrar');
+
+      this.saveAuth(data);
+      this.closeAuth();
+      this.toast(`Conta criada! Seu ID: ${data.consorcioId} ✅`);
+
+      if (this.state.ckPendente) {
+        const p = this.state.ckPendente;
+        this.state.ckPendente = null;
+        this.abrirCheckout(p.nome, p.preco, p.consorcioId);
+      }
+    } catch (e) {
+      this.showErr(err, e.message || 'Erro de conexão.');
+    }
+  },
+
+  saveAuth(data) {
+    this.state.authToken = data.token;
+    this.state.authUser = { nome: data.nome, consorcioId: data.consorcioId, role: data.role };
+    localStorage.setItem(CONFIG.STORAGE_KEYS.TOKEN, data.token);
+    localStorage.setItem(CONFIG.STORAGE_KEYS.USER, JSON.stringify(this.state.authUser));
+    this.renderNavUser();
+  },
+
+  logout() {
+    this.state.authToken = null;
+    this.state.authUser = null;
+    localStorage.removeItem(CONFIG.STORAGE_KEYS.TOKEN);
+    localStorage.removeItem(CONFIG.STORAGE_KEYS.USER);
+    this.renderNavUser();
+    this.toast('Sessão encerrada. 👋');
+  },
+
+  showErr(el, msg) {
+    el.textContent = msg;
+    el.classList.add('show');
+  },
+
+  // ── SERVICES & FORMS ──
+  selSvc(s) {
+    document.getElementById('fs').value = s;
+    document.getElementById('fdesc').placeholder = 'Informe o modelo do aparelho para orçamento gratuito!';
+    this.go('contato');
+  },
+
+  async agendar() {
+    if (!this.validateLgpd('agLgpd')) return;
+
+    const nome = document.getElementById('agNome').value.trim();
+    const tel = document.getElementById('agTel').value.trim();
+    const apar = document.getElementById('agApar').value.trim();
+    const data = document.getElementById('agData').value;
+    const prob = document.getElementById('agProb').value.trim();
+
+    if (!nome || !apar || !data || !this.state.horaSel) {
+      this.toast('Preencha nome, aparelho, data e horário');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${CONFIG.API_BASE}/api/agendamento`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          data, 
+          horario: `${this.state.horaSel}:00`, 
+          aparelho: apar, 
+          descricaoProblema: prob, 
+          clienteNome: nome, 
+          clienteTelefone: tel 
+        })
+      });
+      
+      if (response.ok) {
+        this.toast('✅ Agendamento realizado! Confirmaremos pelo WhatsApp.');
+        this.clearForm('agenda-wrap');
+      } else {
+        const d = await response.json();
+        throw new Error(d.erro || 'Erro ao agendar');
+      }
+    } catch (e) {
+      const msg = encodeURIComponent(`📅 *Agendamento TowerTech.s.*\n\n👤 ${nome}\n📱 ${tel}\n🖥️ ${apar}\n📅 ${data} às ${this.state.horaSel}\n📝 ${prob || 'sem descrição'}\n\n⚖️ *Consentimento LGPD:* Confirmado via site.`);
+      window.open(`https://wa.me/${CONFIG.WA_NUMBER}?text=${msg}`, '_blank');
+    }
+  },
+
+  sendWA() {
+    if (!this.validateLgpd('fLgpd')) return;
+
+    const n = document.getElementById('fn').value.trim();
+    const p = document.getElementById('fp').value.trim();
+    const d = document.getElementById('fd').value;
+    const s = document.getElementById('fs').value;
+    const desc = document.getElementById('fdesc').value.trim();
+    const lock = this.getLockInfo();
+
+    if (!n || !d || !s) {
+      this.toast('Preencha nome, aparelho e serviço');
+      return;
+    }
+
+    const msg = encodeURIComponent(`🔧 *Pedido de Serviço — TowerTech.s.*\n\n👤 ${n}\n📱 ${p || 'não informado'}\n🖥️ ${d}\n⚙️ ${s}\n📝 ${desc || 'não informado'}${lock ? `\n🔐 ${lock}` : ''}\n\n⚖️ *Consentimento LGPD:* O cliente autorizou o tratamento dos dados conforme a lei.`);
+    window.open(`https://wa.me/${CONFIG.WA_NUMBER}?text=${msg}`, '_blank');
+  },
+
+  clearForm(containerClass) {
+    const container = document.querySelector(`.${containerClass}`);
+    if (container) {
+      container.querySelectorAll('input, textarea, select').forEach(el => el.value = '');
+      container.querySelectorAll('.horario-btn').forEach(b => b.classList.remove('sel'));
+      this.state.horaSel = '';
+    }
+  },
+
+  // ── RASTREAMENTO ──
+  async rastrear() {
+    const cod = document.getElementById('trackCod').value.trim().toUpperCase();
+    if (!cod) { this.toast('Digite o código da OS'); return; }
+    
+    const res = document.getElementById('trackResult');
+    res.style.display = 'block';
+    res.innerHTML = '<div style="color:var(--text3);font-size:13px">🔍 Buscando...</div>';
+
+    try {
+      const r = await fetch(`${CONFIG.API_BASE}/api/rastreamento/${cod}`);
+      if (!r.ok) throw new Error('OS não encontrada');
+      const d = await r.json();
+      
+      const steps = d.historico.map(h => `
+        <div class="track-step">
+          <div class="track-dot active">${h.emoji || '📌'}</div>
+          <div class="track-info"><strong>${h.status}</strong><span>${h.observacao} · ${new Date(h.data).toLocaleDateString('pt-BR')}</span></div>
+        </div>`).join('');
+      
+      res.innerHTML = `
+        <div class="track-status-badge">${d.statusEmoji} ${d.statusDesc}</div>
+        <div>${steps}</div>`;
+    } catch (e) {
+      res.innerHTML = '<div style="color:var(--red);font-size:13px">❌ OS não encontrada. Verifique o código.</div>';
+    }
+  },
+
+  // ── CONSÓRCIO ──
+  calcCons() {
+    const sel = document.getElementById('ccProd');
+    const freq = parseInt(document.getElementById('ccFreq').value);
+    const customRow = document.getElementById('customRow');
+    if (customRow) customRow.style.display = sel.value === '0' ? 'block' : 'none';
+
+    let total = parseInt(sel.value) || 0;
+    if (sel.value === '0') total = parseInt(document.getElementById('ccCustom').value) || 0;
+    
+    const parc = parseFloat(document.getElementById('ccParc').value) || 0;
+    const meta = Math.ceil(total * 0.7);
+
+    document.getElementById('rTotal').textContent = total ? `R$ ${total.toLocaleString('pt-BR')}` : '—';
+    document.getElementById('r70').textContent = meta ? `R$ ${meta.toLocaleString('pt-BR')}` : '—';
+
+    if (total && parc && freq) {
+      const n = Math.ceil(meta / parc);
+      const dias = n * freq;
+      let tempo = freq === 30 ? `${n} meses` : freq === 15 ? `${Math.ceil(n / 2)} meses` : `~${Math.ceil(dias / 30)} meses`;
+      
+      document.getElementById('rParc').textContent = `${n} parcelas de R$ ${parc.toLocaleString('pt-BR')}`;
+      document.getElementById('rTempo').textContent = tempo;
+      
+      const pct = Math.min(100, Math.round((parc / meta) * 100));
+      document.getElementById('prog').style.width = `${pct}%`;
+      document.getElementById('progMeta').textContent = `Meta: R$ ${meta.toLocaleString('pt-BR')}`;
+    }
+  },
+
+  consWhats() {
+    const prod = document.getElementById('ccProd');
+    const freq = document.getElementById('ccFreq');
+    const parc = document.getElementById('ccParc').value;
+    const msg = encodeURIComponent(`🏆 *Interesse em Consórcio TowerTech.s.*\n\n📦 Produto: ${prod.options[prod.selectedIndex].text}\n📅 Frequência: ${freq.options[freq.selectedIndex].text}${parc ? `\n💰 Parcela: R$ ${parc}` : ''}\n\nQuero mais informações!`);
+    window.open(`https://wa.me/${CONFIG.WA_NUMBER}?text=${msg}`, '_blank');
+  },
+
+  consProd(btn) {
+    const c = btn.closest('.prod-card');
+    const opts = document.getElementById('ccProd').options;
+    let found = false;
+    for (let i = 0; i < opts.length; i++) {
+      if (opts[i].value === c.dataset.price) {
+        document.getElementById('ccProd').value = c.dataset.price;
+        found = true; break;
+      }
+    }
+    if (!found) {
+      document.getElementById('ccProd').value = '0';
+      document.getElementById('ccCustom').value = c.dataset.price;
+    }
+    this.calcCons();
+    this.go('consorcio');
+  },
+
+  // ── PRODUTOS ──
+  filterP(btn, cat) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.prod-card').forEach(c => {
+      c.style.display = (cat === 'todos' || c.dataset.cat === cat) ? 'block' : 'none';
     });
-    const d=await r.json();
-    if(r.ok){
-      toast('✅ Agendamento realizado! Confirmaremos pelo WhatsApp.');
-      document.getElementById('agNome').value='';document.getElementById('agTel').value='';
-      document.getElementById('agApar').value='';document.getElementById('agData').value='';
-      document.getElementById('agProb').value='';horaSel='';
-      document.querySelectorAll('.horario-btn').forEach(b=>b.classList.remove('sel'));
-    }else{toast('❌ '+(d.erro||'Erro ao agendar. Tente pelo WhatsApp.'));}
-  }catch(e){
-    const msg=encodeURIComponent('📅 *Agendamento TowerTech*\n\n👤 '+nome+'\n📱 '+tel+'\n🖥️ '+apar+'\n📅 '+data+' às '+horaSel+'\n📝 '+(prob||'sem descrição'));
-    window.open('https://wa.me/'+WA+'?text='+msg,'_blank');
+  },
+
+  buyP(btn) {
+    const c = btn.closest('.prod-card');
+    this.abrirCheckout(c.dataset.name, parseInt(c.dataset.price));
+  },
+
+  // ── AVALIAÇÕES ──
+  async loadAvaliacoes() {
+    try {
+      const r = await fetch(`${CONFIG.API_BASE}/api/avaliacoes`);
+      const d = await r.json();
+      document.getElementById('avalNota').textContent = d.mediaGeral;
+      document.getElementById('avalTotal').textContent = `${d.total} avaliações`;
+      document.getElementById('avalStars').textContent = '⭐'.repeat(Math.round(parseFloat(d.mediaGeral) || 5));
+      
+      const grid = document.getElementById('avalGrid');
+      if (!d.avaliacoes || !d.avaliacoes.length) {
+        grid.innerHTML = '<div class="aval-card" style="grid-column:1/-1;text-align:center;color:var(--text3);padding:32px">Seja o primeiro a avaliar! ⭐</div>';
+        return;
+      }
+      grid.innerHTML = d.avaliacoes.slice(0, 6).map(a => `
+        <div class="aval-card">
+          <div class="aval-stars">${'⭐'.repeat(a.nota)}</div>
+          <div class="aval-text">${a.comentario || 'Ótimo serviço!'}</div>
+          <div class="aval-name">${a.nome}</div>
+        </div>`).join('');
+    } catch (e) {
+      document.getElementById('avalGrid').innerHTML = '<div class="aval-card" style="grid-column:1/-1;text-align:center;color:var(--text3);padding:32px">Sem avaliações ainda. Seja o primeiro! ⭐</div>';
+    }
+  },
+
+  // ── LOCK & PATTERN ──
+  onLockType() {
+    const v = document.getElementById('fLockType').value;
+    document.getElementById('fLockPinWrap').style.display = v === 'pin' ? 'block' : 'none';
+    document.getElementById('fLockSenhaWrap').style.display = v === 'senha' ? 'block' : 'none';
+    document.getElementById('fLockPadraoWrap').style.display = v === 'padrao' ? 'block' : 'none';
+    if (v === 'padrao') setTimeout(() => this.initPattern(), 100);
+  },
+
+  getLockInfo() {
+    const v = document.getElementById('fLockType').value;
+    if (!v) return '';
+    if (v === 'pin') return `PIN: ${document.getElementById('fLockPin').value}`;
+    if (v === 'senha') return `Senha: ${document.getElementById('fLockSenha').value}`;
+    if (v === 'padrao') return this.state.pattern.sequence.length ? `Padrão: pontos ${this.state.pattern.sequence.join('-')}` : 'Padrão: não desenhado';
+    return '';
+  },
+
+  initPattern() {
+    if (this.state.pattern.inited) return;
+    const canvas = document.getElementById('patternCanvas');
+    if (!canvas) return;
+    
+    this.state.pattern.inited = true;
+    const ctx = canvas.getContext('2d');
+    this.state.pattern.ctx = ctx;
+    
+    const pad = 30, step = (200 - pad * 2) / 2;
+    this.state.pattern.dots = [];
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 3; c++) {
+        this.state.pattern.dots.push({ x: pad + c * step, y: pad + r * step, n: r * 3 + c + 1 });
+      }
+    }
+    
+    this.drawPatternGrid();
+    
+    canvas.addEventListener('mousedown', (e) => { this.state.pattern.drawing = true; this.state.pattern.sequence = []; this.handlePM(e, canvas); });
+    canvas.addEventListener('mousemove', (e) => { if (this.state.pattern.drawing) this.handlePM(e, canvas); });
+    canvas.addEventListener('mouseup', () => { this.state.pattern.drawing = false; this.drawPatternGrid(); });
+    
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault(); this.state.pattern.drawing = true; this.state.pattern.sequence = []; this.handlePT(e, canvas);
+    }, { passive: false });
+    canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault(); if (this.state.pattern.drawing) this.handlePT(e, canvas);
+    }, { passive: false });
+    canvas.addEventListener('touchend', () => { this.state.pattern.drawing = false; this.drawPatternGrid(); });
+  },
+
+  handlePM(e, canvas) {
+    const rect = canvas.getBoundingClientRect();
+    const sx = canvas.width / rect.width, sy = canvas.height / rect.height;
+    this.activateDot((e.clientX - rect.left) * sx, (e.clientY - rect.top) * sy);
+    this.drawPatternGrid((e.clientX - rect.left) * sx, (e.clientY - rect.top) * sy);
+  },
+
+  handlePT(e, canvas) {
+    const t = e.touches[0], rect = canvas.getBoundingClientRect();
+    const sx = canvas.width / rect.width, sy = canvas.height / rect.height;
+    this.activateDot((t.clientX - rect.left) * sx, (t.clientY - rect.top) * sy);
+    this.drawPatternGrid((t.clientX - rect.left) * sx, (t.clientY - rect.top) * sy);
+  },
+
+  activateDot(x, y) {
+    const { dots, sequence } = this.state.pattern;
+    for (let i = 0; i < dots.length; i++) {
+      const d = dots[i];
+      if (sequence.indexOf(d.n) < 0 && Math.sqrt((x - d.x) ** 2 + (y - d.y) ** 2) < 18) {
+        sequence.push(d.n);
+        this.updatePatternLabel();
+      }
+    }
+  },
+
+  drawPatternGrid(mx, my) {
+    const ctx = this.state.pattern.ctx;
+    if (!ctx) return;
+    
+    const { dots, sequence, drawing } = this.state.pattern;
+    ctx.clearRect(0, 0, 200, 200);
+    ctx.fillStyle = '#161616';
+    ctx.fillRect(0, 0, 200, 200);
+
+    if (sequence.length > 1) {
+      ctx.beginPath(); ctx.strokeStyle = '#c9991a'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+      for (let i = 0; i < sequence.length; i++) {
+        const dd = dots[sequence[i] - 1];
+        i === 0 ? ctx.moveTo(dd.x, dd.y) : ctx.lineTo(dd.x, dd.y);
+      }
+      ctx.stroke();
+      
+      if (drawing && mx !== undefined) {
+        const last = dots[sequence[sequence.length - 1] - 1];
+        ctx.beginPath(); ctx.strokeStyle = '#c9991a88'; ctx.lineWidth = 2;
+        ctx.moveTo(last.x, last.y); ctx.lineTo(mx, my); ctx.stroke();
+      }
+    }
+
+    dots.forEach(dot => {
+      const ativo = sequence.indexOf(dot.n) >= 0;
+      ctx.beginPath(); ctx.arc(dot.x, dot.y, ativo ? 12 : 8, 0, Math.PI * 2);
+      ctx.fillStyle = ativo ? '#c9991a' : '#333'; ctx.fill();
+      if (ativo) {
+        ctx.beginPath(); ctx.arc(dot.x, dot.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#0d0d0d'; ctx.fill();
+      }
+      ctx.fillStyle = ativo ? '#0d0d0d' : '#666'; ctx.font = 'bold 10px sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(dot.n, dot.x, dot.y);
+    });
+  },
+
+  clearPattern() {
+    this.state.pattern.sequence = [];
+    this.drawPatternGrid();
+    this.updatePatternLabel();
+  },
+
+  updatePatternLabel() {
+    const el = document.getElementById('patternLabel');
+    if (el) el.textContent = this.state.pattern.sequence.length ? `${this.state.pattern.sequence.length} pontos: ${this.state.pattern.sequence.join(' → ')}` : 'Nenhum padrão';
+  },
+
+  // ── CHECKOUT ──
+  abrirCheckout(nome, preco, consorcioId = null) {
+    if (!this.state.authToken) {
+      this.state.ckPendente = { nome, preco, consorcioId };
+      this.toast('Faça login para continuar 👤');
+      this.openAuth('login');
+      return;
+    }
+    this.state.ckProduto = { nome, preco, consorcioId };
+    this.goStep(1);
+    document.getElementById('modalCheckout').classList.add('open');
+  },
+
+  closeCheckout() {
+    document.getElementById('modalCheckout').classList.remove('open');
+    this.goStep(1);
+    this.state.ckMetodo = '';
+    document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('sel'));
+    ['formPix', 'formBoleto', 'formCartao'].forEach(f => document.getElementById(f).style.display = 'none');
+  },
+
+  goStep(n) {
+    for (let i = 1; i <= 3; i++) {
+      const panel = document.getElementById(`ckPanel${i}`);
+      const step = document.getElementById(`ckStep${i}`);
+      if (panel) panel.classList.toggle('active', i === n);
+      if (step) {
+        step.classList.toggle('active', i === n);
+        step.classList.toggle('done', i < n);
+      }
+    }
+    if (n === 1) this.renderResumo();
+  },
+
+  renderResumo() {
+    document.getElementById('ckResumo').innerHTML = `
+      <div class="resumo-item"><span>Produto</span><span>${this.state.ckProduto.nome}</span></div>
+      <div class="resumo-item"><span>Total</span><span style="color:var(--gold);font-weight:900">R$ ${this.state.ckProduto.preco.toLocaleString('pt-BR')}</span></div>`;
+    
+    if (this.state.authUser) {
+      document.getElementById('ckUserInfo').innerHTML = `
+        <div class="user-badge">
+          <div class="user-badge-ico">${this.state.authUser.nome[0].toUpperCase()}</div>
+          <div class="user-badge-info"><strong>${this.state.authUser.nome}</strong><small>ID: ${this.state.authUser.consorcioId}</small></div>
+        </div>`;
+    }
+  },
+
+  selMetodo(m, el) {
+    this.state.ckMetodo = m;
+    document.querySelectorAll('.pay-method').forEach(x => x.classList.remove('sel'));
+    el.classList.add('sel');
+    ['formPix', 'formBoleto', 'formCartao'].forEach(f => document.getElementById(f).style.display = 'none');
+    document.getElementById(`form${m.charAt(0).toUpperCase() + m.slice(1)}`).style.display = 'block';
+  },
+
+  async gerarPix() {
+    try {
+      this.toast('Gerando PIX...');
+      const endpoint = this.state.ckProduto.consorcioId ? `/api/pagamentos/consorcio/${this.state.ckProduto.consorcioId}/pix` : '/api/pagamentos/pix';
+      const r = await fetch(CONFIG.API_BASE + endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${this.state.authToken}` },
+        body: JSON.stringify({ valor: this.state.ckProduto.preco, descricao: `TowerTech.s. - ${this.state.ckProduto.nome}` })
+      });
+      const d = await r.json();
+      document.getElementById('pixBox').style.display = 'block';
+      if (d.qrCodeBase64) {
+        document.getElementById('pixQr').innerHTML = `<img src="data:image/png;base64,${d.qrCodeBase64}" style="width:100%;height:100%;object-fit:contain"/>`;
+      }
+      const copy = document.getElementById('pixCopy');
+      copy.textContent = d.qrCode ? `${d.qrCode.substring(0, 60)}...` : 'Código gerado';
+      copy.dataset.code = d.qrCode || '';
+    } catch (e) { this.toast('Erro ao gerar PIX.'); }
+  },
+
+  copiarPix() {
+    const code = document.getElementById('pixCopy').dataset.code;
+    if (code) navigator.clipboard.writeText(code).then(() => this.toast('✅ Código PIX copiado!'));
+  },
+
+  async gerarBoleto() {
+    try {
+      this.toast('Gerando boleto...');
+      const endpoint = this.state.ckProduto.consorcioId ? `/api/pagamentos/consorcio/${this.state.ckProduto.consorcioId}/boleto` : '/api/pagamentos/boleto';
+      const r = await fetch(CONFIG.API_BASE + endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${this.state.authToken}` },
+        body: JSON.stringify({ valor: this.state.ckProduto.preco, descricao: `TowerTech.s. - ${this.state.ckProduto.nome}` })
+      });
+      const d = await r.json();
+      document.getElementById('boletoBox').style.display = 'block';
+      document.getElementById('boletoLink').onclick = () => window.open(d.boletoUrl, '_blank');
+      this.toast('✅ Boleto gerado!');
+    } catch (e) { this.toast('Erro ao gerar boleto.'); }
+  },
+
+  fmtCard(el) {
+    const v = el.value.replace(/\D/g, '').substring(0, 16);
+    el.value = v.replace(/(.{4})/g, '$1 ').trim();
+  },
+
+  pagarCartao() {
+    this.toast('⚠️ Cartão em breve! Use PIX ou boleto.');
+  },
+
+  selHora(btn) {
+    document.querySelectorAll('.horario-btn').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+    this.state.horaSel = btn.textContent;
   }
-}
+};
 
-// ── FORMULÁRIO SERVIÇO ──
-function sendWA(){
-  const n=document.getElementById('fn').value.trim();
-  const p=document.getElementById('fp').value.trim();
-  const d=document.getElementById('fd').value;
-  const s=document.getElementById('fs').value;
-  const desc=document.getElementById('fdesc').value.trim();
-  if(!n||!d||!s){toast('Preencha nome, aparelho e serviço');return;}
-  const msg=encodeURIComponent('🔧 *Pedido de Serviço — TowerTech*\n\n👤 '+n+'\n📱 '+(p||'não informado')+'\n🖥️ '+d+'\n⚙️ '+s+'\n📝 '+(desc||'não informado'));
-  window.open('https://wa.me/'+WA+'?text='+msg,'_blank');
-}
+// Global Exposure for HTML onclicks
+window.go = App.go.bind(App);
+window.toggleMenu = App.toggleMenu.bind(App);
+window.selSvc = App.selSvc.bind(App);
+window.rastrear = App.rastrear.bind(App);
+window.calcCons = App.calcCons.bind(App);
+window.consWhats = App.consWhats.bind(App);
+window.consProd = App.consProd.bind(App);
+window.filterP = App.filterP.bind(App);
+window.buyP = App.buyP.bind(App);
+window.selHora = App.selHora.bind(App);
+window.agendar = App.agendar.bind(App);
+window.onLockType = App.onLockType.bind(App);
+window.clearPattern = App.clearPattern.bind(App);
+window.sendWA = App.sendWA.bind(App);
+window.openAuth = App.openAuth.bind(App);
+window.closeAuth = App.closeAuth.bind(App);
+window.switchAuth = App.switchAuth.bind(App);
+window.doLogin = App.doLogin.bind(App);
+window.doCadastro = App.doCadastro.bind(App);
+window.logout = App.logout.bind(App);
+window.goStep = App.goStep.bind(App);
+window.selMetodo = App.selMetodo.bind(App);
+window.gerarPix = App.gerarPix.bind(App);
+window.copiarPix = App.copiarPix.bind(App);
+window.gerarBoleto = App.gerarBoleto.bind(App);
+window.fmtCard = App.fmtCard.bind(App);
+window.pagarCartao = App.pagarCartao.bind(App);
+window.closeCheckout = App.closeCheckout.bind(App);
+window.abrirCheckout = App.abrirCheckout.bind(App);
 
-// ── INIT ──
-document.addEventListener('DOMContentLoaded',()=>{
-  // Data mínima = amanhã
-  const amanha=new Date();amanha.setDate(amanha.getDate()+1);
-  document.getElementById('agData').min=amanha.toISOString().split('T')[0];
-  calcCons();
-  loadAvaliacoes();
-});
+document.addEventListener('DOMContentLoaded', () => App.init());
 </script>
 </body>
 </html>
