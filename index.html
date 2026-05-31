@@ -6,6 +6,7 @@
 <title>TowerTech.s. — Assistência Técnica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -192,6 +193,21 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 .resumo-item:last-child{border:none;font-weight:700;font-size:14px;}
 .lock-info{background:var(--bg3);border:1px solid #c9991a22;border-radius:6px;padding:10px 14px;font-size:10px;color:var(--text3);line-height:1.6;}
 .lock-info strong{color:var(--text2);}
+/* FIDELIDADE */
+.fidel-card{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius-lg);padding:24px;}
+.fidel-progress{margin:20px 0;}
+.fidel-stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:16px 0;}
+.stamp{width:100%;aspect-ratio:1;border-radius:50%;border:2px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .3s;}
+.stamp.done{background:var(--gold);border-color:var(--gold);}
+.stamp.free{background:var(--green);border-color:var(--green);animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.fidel-bar{height:8px;background:var(--bg4);border-radius:4px;overflow:hidden;margin-top:8px;}
+.fidel-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:4px;transition:width .5s;}
+/* GOOGLE BTN */
+.btn-google{width:100%;background:#fff;color:#333;border:1.5px solid #ddd;border-radius:4px;padding:10px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;margin-bottom:14px;}
+.btn-google:hover{border-color:#c9991a;background:#fffdf5;}
+.auth-divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--text3);font-size:11px;}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--gold-dim);}
 
 /* LGPD & SENIOR UI IMPROVEMENTS */
 .fg-check{display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-top:10px;}
@@ -247,6 +263,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
     <a onclick="go('consorcio')">Consórcio</a>
     <a onclick="go('loja')">Loja</a>
     <a onclick="go('avaliacoes')">Avaliações</a>
+    <a onclick="go('fidelidade')">Fidelidade</a>
     <a onclick="go('contato')">Contato</a>
   </div>
   <button class="nav-cta" onclick="go('contato')">AGENDAR</button>
@@ -392,19 +409,67 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 <section id="loja" class="sec">
   <div class="sec-tag">// produtos</div>
   <div class="sec-title">Loja <span>TowerTech.s.</span></div>
-  <div class="tabs">
-    <button class="tab active" onclick="filterP(this,'todos')">TODOS</button>
-    <button class="tab" onclick="filterP(this,'celular')">CELULARES</button>
-    <button class="tab" onclick="filterP(this,'notebook')">NOTEBOOKS</button>
-    <button class="tab" onclick="filterP(this,'acessorio')">ACESSÓRIOS</button>
+
+  <!-- BUSCA -->
+  <div style="position:relative;margin-bottom:28px;">
+    <input type="text" id="searchInput" placeholder="🔍  Buscar produto..." oninput="buscarProduto(this.value)"
+      style="width:100%;background:var(--bg2);border:1.5px solid var(--gold-dim);border-radius:8px;color:var(--text);padding:12px 16px;font-family:'Exo 2',sans-serif;font-size:14px;outline:none;transition:border-color .2s;"/>
+    <div id="searchNone" style="display:none;text-align:center;padding:32px;color:var(--text3);font-size:13px;">Nenhum produto encontrado para essa busca.</div>
   </div>
-  <div class="grid3" id="pgrid">
-    <div class="prod-card" data-cat="celular" data-name="iPhone 14 128GB" data-price="3200"><div class="prod-img">📱</div><div class="prod-info"><div class="prod-name">iPhone 14 — 128GB</div><div class="prod-spec">Preto • Seminovo • Garantia 6 meses</div><div class="prod-foot"><div class="prod-price">R$ 3.200</div><div class="prod-btns"><button class="prod-btn sec" onclick="consProd(this)">CONSÓRCIO</button><button class="prod-btn" onclick="buyP(this)">COMPRAR</button></div></div></div></div>
-    <div class="prod-card" data-cat="celular" data-name="Samsung Galaxy A54" data-price="1100"><div class="prod-img">📱</div><div class="prod-info"><div class="prod-name">Samsung Galaxy A54</div><div class="prod-spec">Branco • Seminovo • Garantia 3 meses</div><div class="prod-foot"><div class="prod-price">R$ 1.100</div><div class="prod-btns"><button class="prod-btn sec" onclick="consProd(this)">CONSÓRCIO</button><button class="prod-btn" onclick="buyP(this)">COMPRAR</button></div></div></div></div>
-    <div class="prod-card" data-cat="notebook" data-name="Dell Inspiron i5" data-price="2400"><div class="prod-img">💻</div><div class="prod-info"><div class="prod-name">Dell Inspiron i5</div><div class="prod-spec">8GB RAM • SSD 256GB • Garantia 6 meses</div><div class="prod-foot"><div class="prod-price">R$ 2.400</div><div class="prod-btns"><button class="prod-btn sec" onclick="consProd(this)">CONSÓRCIO</button><button class="prod-btn" onclick="buyP(this)">COMPRAR</button></div></div></div></div>
-    <div class="prod-card" data-cat="acessorio" data-name="Fone JBL Tune 510BT" data-price="220"><div class="prod-img">🎧</div><div class="prod-info"><div class="prod-name">Fone Bluetooth JBL</div><div class="prod-spec">Tune 510BT • Novo • Lacrado</div><div class="prod-foot"><div class="prod-price">R$ 220</div><div class="prod-btns"><button class="prod-btn" onclick="buyP(this)">COMPRAR</button></div></div></div></div>
-    <div class="prod-card" data-cat="acessorio" data-name="Carregador 65W GaN" data-price="85"><div class="prod-img">🔌</div><div class="prod-info"><div class="prod-name">Carregador 65W GaN</div><div class="prod-spec">USB-C • Universal • Novo</div><div class="prod-foot"><div class="prod-price">R$ 85</div><div class="prod-btns"><button class="prod-btn" onclick="buyP(this)">COMPRAR</button></div></div></div></div>
-    <div class="prod-card" data-cat="celular" data-name="Motorola Moto G84" data-price="900"><div class="prod-img">📱</div><div class="prod-info"><div class="prod-name">Motorola Moto G84</div><div class="prod-spec">Grafite • Seminovo • Garantia 3 meses</div><div class="prod-foot"><div class="prod-price">R$ 900</div><div class="prod-btns"><button class="prod-btn sec" onclick="consProd(this)">CONSÓRCIO</button><button class="prod-btn" onclick="buyP(this)">COMPRAR</button></div></div></div></div>
+
+  <!-- RESULTADOS DE BUSCA -->
+  <div id="searchResults" style="display:none;margin-bottom:32px;">
+    <div class="sec-tag" style="margin-bottom:12px;">// resultados da busca</div>
+    <div class="grid3" id="searchGrid"></div>
+  </div>
+
+  <!-- CATEGORIA: SMARTPHONES -->
+  <div class="cat-section" id="catCelular">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--gold-dim);">
+      <span style="font-size:22px;">📱</span>
+      <div>
+        <div style="font-size:16px;font-weight:900;">Smartphones</div>
+        <div style="font-size:11px;color:var(--text3);">Celulares seminovos com garantia</div>
+      </div>
+    </div>
+    <div class="grid3">
+      <div class="prod-card" data-cat="celular" data-name="iPhone 14 128GB" data-price="3200"><div class="prod-img">📱</div><div class="prod-info"><div class="prod-name">iPhone 14 — 128GB</div><div class="prod-spec">Preto • Seminovo • Garantia 6 meses</div><div class="prod-foot"><div class="prod-btns" style="width:100%;display:flex;gap:5px"><button class="prod-btn sec" onclick="consProd(this)">CONSÓRCIO</button><button class="prod-btn" onclick="consultarP(this)">CONSULTAR PREÇO</button></div></div></div></div>
+      <div class="prod-card" data-cat="celular" data-name="Samsung Galaxy A54" data-price="1100"><div class="prod-img">📱</div><div class="prod-info"><div class="prod-name">Samsung Galaxy A54</div><div class="prod-spec">Branco • Seminovo • Garantia 3 meses</div><div class="prod-foot"><div class="prod-btns" style="width:100%;display:flex;gap:5px"><button class="prod-btn sec" onclick="consProd(this)">CONSÓRCIO</button><button class="prod-btn" onclick="consultarP(this)">CONSULTAR PREÇO</button></div></div></div></div>
+      <div class="prod-card" data-cat="celular" data-name="Motorola Moto G84" data-price="900"><div class="prod-img">📱</div><div class="prod-info"><div class="prod-name">Motorola Moto G84</div><div class="prod-spec">Grafite • Seminovo • Garantia 3 meses</div><div class="prod-foot"><div class="prod-btns" style="width:100%;display:flex;gap:5px"><button class="prod-btn sec" onclick="consProd(this)">CONSÓRCIO</button><button class="prod-btn" onclick="consultarP(this)">CONSULTAR PREÇO</button></div></div></div></div>
+    </div>
+  </div>
+
+  <div style="height:32px;"></div>
+
+  <!-- CATEGORIA: COMPUTADORES -->
+  <div class="cat-section" id="catNotebook">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--gold-dim);">
+      <span style="font-size:22px;">💻</span>
+      <div>
+        <div style="font-size:16px;font-weight:900;">Computadores</div>
+        <div style="font-size:11px;color:var(--text3);">Notebooks e PCs com garantia</div>
+      </div>
+    </div>
+    <div class="grid3">
+      <div class="prod-card" data-cat="notebook" data-name="Dell Inspiron i5" data-price="2400"><div class="prod-img">💻</div><div class="prod-info"><div class="prod-name">Dell Inspiron i5</div><div class="prod-spec">8GB RAM • SSD 256GB • Garantia 6 meses</div><div class="prod-foot"><div class="prod-btns" style="width:100%;display:flex;gap:5px"><button class="prod-btn sec" onclick="consProd(this)">CONSÓRCIO</button><button class="prod-btn" onclick="consultarP(this)">CONSULTAR PREÇO</button></div></div></div></div>
+    </div>
+  </div>
+
+  <div style="height:32px;"></div>
+
+  <!-- CATEGORIA: ACESSÓRIOS -->
+  <div class="cat-section" id="catAcessorio">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--gold-dim);">
+      <span style="font-size:22px;">🎧</span>
+      <div>
+        <div style="font-size:16px;font-weight:900;">Acessórios</div>
+        <div style="font-size:11px;color:var(--text3);">Fones, carregadores e periféricos</div>
+      </div>
+    </div>
+    <div class="grid3">
+      <div class="prod-card" data-cat="acessorio" data-name="Fone JBL Tune 510BT" data-price="220"><div class="prod-img">🎧</div><div class="prod-info"><div class="prod-name">Fone Bluetooth JBL</div><div class="prod-spec">Tune 510BT • Novo • Lacrado</div><div class="prod-foot"><div class="prod-btns" style="width:100%"><button class="prod-btn" style="width:100%" onclick="consultarP(this)">CONSULTAR PREÇO</button></div></div></div></div>
+      <div class="prod-card" data-cat="acessorio" data-name="Carregador 65W GaN" data-price="85"><div class="prod-img">🔌</div><div class="prod-info"><div class="prod-name">Carregador 65W GaN</div><div class="prod-spec">USB-C • Universal • Novo</div><div class="prod-foot"><div class="prod-btns" style="width:100%"><button class="prod-btn" style="width:100%" onclick="consultarP(this)">CONSULTAR PREÇO</button></div></div></div></div>
+    </div>
   </div>
 </section>
 <div class="div"></div>
@@ -517,6 +582,44 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
   </div>
 </section>
 
+<div class="div"></div>
+
+<!-- FIDELIDADE -->
+<section id="fidelidade" class="sec">
+  <div class="sec-tag">// programa de recompensas</div>
+  <div class="sec-title">Fidelidade <span>TowerTech.s.</span></div>
+  <div class="fidel-card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;">
+      <div>
+        <h3 style="font-size:18px;font-weight:900;margin-bottom:8px;">A cada 10 manutenções,<br><span style="color:var(--gold)">a 11ª é de graça! 🎉</span></h3>
+        <p style="font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:16px;">Toda vez que você traz um aparelho para manutenção na TowerTech.s., você ganha um carimbo. Com 10 carimbos, a próxima mão de obra é por nossa conta!</p>
+        <div style="background:var(--bg3);border:1px solid var(--gold-dim);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--text3);line-height:1.6;">
+          ✅ Válido para qualquer tipo de manutenção<br>
+          ✅ Carimbos não expiram<br>
+          ✅ Só precisa ter conta no site<br>
+          🎁 Desconto na mão de obra — peças à parte
+        </div>
+      </div>
+      <div id="fidelWidgetWrap">
+        <div id="fidelLogado" style="display:none">
+          <div style="font-size:12px;color:var(--text2);margin-bottom:12px;text-align:center;" id="fidelMsg">Carregando seus carimbos...</div>
+          <div class="fidel-stamps" id="fidelStamps"></div>
+          <div class="fidel-bar"><div class="fidel-fill" id="fidelFill" style="width:0%"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px;">
+            <span id="fidelCount">0 de 10</span>
+            <span style="color:var(--gold);font-weight:700;">🎁 Próxima grátis!</span>
+          </div>
+        </div>
+        <div id="fidelDeslogado" style="text-align:center;padding:20px;">
+          <div style="font-size:40px;margin-bottom:12px;">🏆</div>
+          <p style="font-size:12px;color:var(--text3);margin-bottom:14px;">Faça login para ver seus carimbos e acompanhar seu progresso!</p>
+          <button class="btn-gold" onclick="openAuth('login')">ENTRAR PARA VER MEUS CARIMBOS</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- SOCIAL BAR -->
 <div class="social-bar">
   <a class="social-btn wa" href="https://wa.me/5519982608656" target="_blank">📱 (19) 98260-8656</a>
@@ -539,6 +642,8 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
         <button class="modal-tab" id="tabCad" onclick="switchAuth('cadastro')">CRIAR CONTA</button>
       </div>
       <div id="formLogin">
+        <button class="btn-google" onclick="loginGoogle()"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> ENTRAR COM GOOGLE</button>
+        <div class="auth-divider">ou entre com e-mail</div>
         <div class="modal-form">
           <div class="fg"><label>E-mail</label><input type="email" id="lEmail" placeholder="seu@email.com"/></div>
           <div class="fg"><label>Senha</label><input type="password" id="lSenha" placeholder="••••••"/></div>
@@ -548,6 +653,8 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
         <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--text3)">Não tem conta? <span style="color:var(--gold);cursor:pointer" onclick="switchAuth('cadastro')">Cadastre-se grátis</span></p>
       </div>
       <div id="formCad" style="display:none">
+        <button class="btn-google" onclick="loginGoogle()"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> CADASTRAR COM GOOGLE</button>
+        <div class="auth-divider">ou crie com e-mail</div>
         <div class="modal-form">
           <div class="fg"><label>Nome completo</label><input type="text" id="cNome" placeholder="Seu nome"/></div>
           <div class="fg"><label>E-mail</label><input type="email" id="cEmail" placeholder="seu@email.com"/></div>
@@ -584,13 +691,8 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
         </div>
       </div>
       <div class="ck-panel" id="ckPanel2">
-        <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Escolha como pagar:</p>
-        <div class="pay-methods">
-          <div class="pay-method" onclick="selMetodo('pix',this)"><div class="pay-method-icon">📱</div><div class="pay-method-name">PIX</div></div>
-          <div class="pay-method" onclick="selMetodo('boleto',this)"><div class="pay-method-icon">🏦</div><div class="pay-method-name">BOLETO</div></div>
-          <div class="pay-method" onclick="selMetodo('cartao',this)"><div class="pay-method-icon">💳</div><div class="pay-method-name">CARTÃO</div></div>
-        </div>
-        <div id="formPix" style="display:none">
+        <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Pagamento via PIX — rápido e seguro:</p>
+        <div id="formPix">
           <button class="btn-gold" style="width:100%;margin-bottom:12px" onclick="gerarPix()">GERAR QR CODE PIX</button>
           <div class="pix-box" id="pixBox" style="display:none">
             <div class="pix-qr" id="pixQr">Carregando QR Code...</div>
@@ -598,25 +700,9 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
             <p style="font-size:11px;color:var(--text3)">⏱ Válido por 30 min. Confirmação automática.</p>
           </div>
         </div>
-        <div id="formBoleto" style="display:none">
-          <button class="btn-gold" style="width:100%;margin-bottom:12px" onclick="gerarBoleto()">GERAR BOLETO</button>
-          <div class="boleto-box" id="boletoBox" style="display:none">
-            <p style="font-size:12px;color:var(--text2);margin-bottom:10px">Boleto gerado! Vence em 3 dias úteis.</p>
-            <button class="btn-gold" style="width:100%" id="boletoLink">ABRIR BOLETO</button>
-          </div>
-        </div>
-        <div id="formCartao" style="display:none">
-          <div class="card-form">
-            <div class="fg"><label style="font-size:10px;letter-spacing:2px;color:var(--text2);text-transform:uppercase">Número do cartão</label><input type="tel" id="cardNum" placeholder="0000 0000 0000 0000" inputmode="numeric" maxlength="19" oninput="fmtCard(this)"/></div>
-            <div class="fg"><label style="font-size:10px;letter-spacing:2px;color:var(--text2);text-transform:uppercase">Nome no cartão</label><input type="text" id="cardNome" placeholder="NOME SOBRENOME"/></div>
-            <div class="card-row">
-              <div class="fg"><label style="font-size:10px;letter-spacing:2px;color:var(--text2);text-transform:uppercase">Validade</label><input type="tel" id="cardVal" placeholder="MM/AA" inputmode="numeric" maxlength="5"/></div>
-              <div class="fg"><label style="font-size:10px;letter-spacing:2px;color:var(--text2);text-transform:uppercase">CVV</label><input type="tel" id="cardCvv" placeholder="000" inputmode="numeric" maxlength="4"/></div>
-            </div>
-            <select id="cardParc"><option value="1">1x sem juros</option><option value="2">2x sem juros</option><option value="3">3x sem juros</option><option value="6">6x sem juros</option><option value="12">12x com juros</option></select>
-            <p style="font-size:10px;color:var(--text3)">🔒 Processado pelo Mercado Pago com segurança.</p>
-            <button class="btn-gold" onclick="pagarCartao()">PAGAR AGORA</button>
-          </div>
+        <div style="margin-top:12px;background:var(--bg3);border:1px solid var(--gold-dim);border-radius:6px;padding:12px;">
+          <p style="font-size:11px;color:var(--text3);line-height:1.6;">💳 Prefere pagar no <strong style="color:var(--text2)">cartão ou boleto</strong>? Entre em contato pelo WhatsApp e fechamos pessoalmente!</p>
+          <a href="https://wa.me/5519982608656?text=Olá!%20Quero%20pagar%20no%20cartão/boleto." target="_blank" style="display:inline-block;margin-top:8px;font-size:11px;color:var(--gold);font-weight:700;">📲 Falar no WhatsApp →</a>
         </div>
         <div style="margin-top:16px"><button class="btn-out" style="width:100%" onclick="goStep(1)">← VOLTAR</button></div>
       </div>
@@ -674,10 +760,10 @@ const App = {
 
   initListeners() {
     document.getElementById('modalAuth').addEventListener('click', (e) => {
-      if (e.target.id === 'modalAuth') App.closeAuth();
+      if (e.target.id === 'modalAuth') this.closeAuth();
     });
     document.getElementById('modalCheckout').addEventListener('click', (e) => {
-      if (e.target.id === 'modalCheckout') App.closeCheckout();
+      if (e.target.id === 'modalCheckout') this.closeCheckout();
     });
   },
 
@@ -733,14 +819,19 @@ const App = {
   renderNavUser() {
     const el = document.getElementById('navAuth');
     if (this.state.authUser) {
+      const foto = this.state.authUser.foto;
+      const ico = foto
+        ? `<img src="${foto}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)"/>`
+        : `<div class="nav-user-ico">${this.state.authUser.nome[0].toUpperCase()}</div>`;
       el.innerHTML = `
         <div class="nav-user" onclick="App.logout()">
-          <div class="nav-user-ico">${this.state.authUser.nome[0].toUpperCase()}</div>
+          ${ico}
           <span class="nav-user-name">${this.state.authUser.nome.split(' ')[0]} ↩</span>
         </div>`;
     } else {
       el.innerHTML = '<button class="nav-login-btn" onclick="App.openAuth(\'login\')">ENTRAR</button>';
     }
+    if (typeof renderFidelidade === 'function') renderFidelidade();
   },
 
   openAuth(tab = 'login') {
@@ -809,7 +900,7 @@ const App = {
     }
 
     try {
-      const response = await fetch(`${CONFIG.API_BASE}/api/auth/cadastro`, {
+      const response = await fetch(`${CONFIG.API_BASE}/api/usuarios`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nome, email, telefone, cpf, senha })
@@ -820,13 +911,7 @@ const App = {
 
       this.saveAuth(data);
       this.closeAuth();
-      this.toast(`Conta criada! Seu ID: ${data.consorcioId} ✅`);
-
-      if (this.state.ckPendente) {
-        const p = this.state.ckPendente;
-        this.state.ckPendente = null;
-        this.abrirCheckout(p.nome, p.preco, p.consorcioId);
-      }
+      this.toast('Conta criada com sucesso! ✅');
     } catch (e) {
       this.showErr(err, e.message || 'Erro de conexão.');
     }
@@ -997,6 +1082,12 @@ const App = {
   },
 
   consProd(btn) {
+    // Exige login para consórcio
+    if (!this.state.authToken) {
+      this.toast('Faça login para iniciar um consórcio 👤');
+      this.openAuth('login');
+      return;
+    }
     const c = btn.closest('.prod-card');
     const opts = document.getElementById('ccProd').options;
     let found = false;
@@ -1014,6 +1105,43 @@ const App = {
     this.go('consorcio');
   },
 
+  // ── BUSCA DE PRODUTOS ──
+  buscarProduto(termo) {
+    const searchResults = document.getElementById('searchResults');
+    const searchGrid = document.getElementById('searchGrid');
+    const searchNone = document.getElementById('searchNone');
+    const cats = document.querySelectorAll('.cat-section');
+
+    if (!termo.trim()) {
+      searchResults.style.display = 'none';
+      searchNone.style.display = 'none';
+      cats.forEach(c => c.style.display = 'block');
+      return;
+    }
+
+    // Esconde categorias e mostra resultados
+    cats.forEach(c => c.style.display = 'none');
+    searchResults.style.display = 'block';
+
+    const todos = document.querySelectorAll('.prod-card');
+    const resultados = [];
+    todos.forEach(card => {
+      const nome = card.dataset.name.toLowerCase();
+      if (nome.includes(termo.toLowerCase())) {
+        resultados.push(card.cloneNode(true));
+      }
+    });
+
+    if (resultados.length === 0) {
+      searchGrid.innerHTML = '';
+      searchNone.style.display = 'block';
+    } else {
+      searchNone.style.display = 'none';
+      searchGrid.innerHTML = '';
+      resultados.forEach(r => searchGrid.appendChild(r));
+    }
+  },
+
   // ── PRODUTOS ──
   filterP(btn, cat) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1026,6 +1154,13 @@ const App = {
   buyP(btn) {
     const c = btn.closest('.prod-card');
     this.abrirCheckout(c.dataset.name, parseInt(c.dataset.price));
+  },
+
+  consultarP(btn) {
+    const c = btn.closest('.prod-card');
+    const nome = c.dataset.name;
+    const msg = encodeURIComponent(`Olá TowerTech.s.! Tenho interesse em: *${nome}*. Qual o valor atual?`);
+    window.open(`https://wa.me/5519982608656?text=${msg}`, '_blank');
   },
 
   // ── AVALIAÇÕES ──
@@ -1194,7 +1329,7 @@ const App = {
     this.goStep(1);
     this.state.ckMetodo = '';
     document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('sel'));
-    ['formPix', 'formBoleto', 'formCartao'].forEach(f => document.getElementById(f).style.display = 'none');
+    const pf = document.getElementById('formPix'); if(pf) pf.style.display = 'none';
   },
 
   goStep(n) {
@@ -1228,7 +1363,7 @@ const App = {
     this.state.ckMetodo = m;
     document.querySelectorAll('.pay-method').forEach(x => x.classList.remove('sel'));
     el.classList.add('sel');
-    ['formPix', 'formBoleto', 'formCartao'].forEach(f => document.getElementById(f).style.display = 'none');
+    const pf = document.getElementById('formPix'); if(pf) pf.style.display = 'none';
     document.getElementById(`form${m.charAt(0).toUpperCase() + m.slice(1)}`).style.display = 'block';
   },
 
@@ -1299,6 +1434,7 @@ window.consWhats = App.consWhats.bind(App);
 window.consProd = App.consProd.bind(App);
 window.filterP = App.filterP.bind(App);
 window.buyP = App.buyP.bind(App);
+window.consultarP = App.consultarP.bind(App);
 window.selHora = App.selHora.bind(App);
 window.agendar = App.agendar.bind(App);
 window.onLockType = App.onLockType.bind(App);
@@ -1319,8 +1455,167 @@ window.fmtCard = App.fmtCard.bind(App);
 window.pagarCartao = App.pagarCartao.bind(App);
 window.closeCheckout = App.closeCheckout.bind(App);
 window.abrirCheckout = App.abrirCheckout.bind(App);
+window.buscarProduto = App.buscarProduto.bind(App);
+window.loginGoogle = loginGoogle;
 
-document.addEventListener('DOMContentLoaded', () => App.init());
+document.addEventListener('DOMContentLoaded', () => {
+  App.init();
+  initGoogleLogin();
+  renderFidelidade();
+});
+
+// ══════════════════════════════════════════
+// GOOGLE LOGIN
+// ══════════════════════════════════════════
+const GOOGLE_CLIENT_ID = '780840580508-pt28s41n9aig1leh95ui0oqthtnj42ra.apps.googleusercontent.com';
+
+function initGoogleLogin() {
+  if (typeof google === 'undefined') return;
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredential,
+    auto_select: false,
+    cancel_on_tap_outside: true
+  });
+}
+
+function loginGoogle() {
+  if (typeof google === 'undefined') {
+    App.toast('Google Login indisponível. Use e-mail e senha.');
+    return;
+  }
+  google.accounts.id.prompt((notification) => {
+    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+      // Fallback: abre popup manual
+      google.accounts.id.renderButton(
+        document.createElement('div'),
+        { theme: 'outline', size: 'large' }
+      );
+      App.toast('Use o popup do Google que apareceu.');
+    }
+  });
+}
+
+async function handleGoogleCredential(response) {
+  try {
+    // Decodifica o JWT do Google para pegar nome e email
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    const { name, email, picture } = payload;
+
+    // Tenta logar — se não tiver conta, cadastra automaticamente
+    let r = await fetch(`${App.CONFIG?.API_BASE || 'https://towertech-backend-production.up.railway.app'}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, senha: `google_${payload.sub}` })
+    });
+
+    if (!r.ok) {
+      // Não tem conta — cadastra automaticamente com dados do Google
+      r = await fetch(`${App.CONFIG?.API_BASE || 'https://towertech-backend-production.up.railway.app'}/api/auth/cadastro`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome: name,
+          email: email,
+          telefone: '00000000000',
+          senha: `google_${payload.sub}`,
+          cpf: ''
+        })
+      });
+    }
+
+    const d = await r.json();
+    if (d.token) {
+      App.state.authToken = d.token;
+      App.state.authUser = { nome: d.nome, consorcioId: d.consorcioId, role: d.role, foto: picture };
+      localStorage.setItem('tt_token', d.token);
+      localStorage.setItem('tt_user', JSON.stringify(App.state.authUser));
+      App.renderNavUser();
+      App.closeAuth();
+      App.toast(`Bem-vindo, ${d.nome}! ✅`);
+      renderFidelidade();
+    }
+  } catch (e) {
+    App.toast('Erro no login Google. Tente e-mail e senha.');
+  }
+}
+
+// ══════════════════════════════════════════
+// SISTEMA DE FIDELIDADE
+// ══════════════════════════════════════════
+function renderFidelidade() {
+  const user = App.state?.authUser;
+  const logado = document.getElementById('fidelLogado');
+  const deslogado = document.getElementById('fidelDeslogado');
+  if (!logado || !deslogado) return;
+
+  if (!user) {
+    logado.style.display = 'none';
+    deslogado.style.display = 'block';
+    return;
+  }
+
+  logado.style.display = 'block';
+  deslogado.style.display = 'none';
+
+  // Busca pontos da API
+  const token = App.state.authToken;
+  fetch('https://towertech-backend-production.up.railway.app/api/fidelidade/meu-saldo', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  })
+  .then(r => r.json())
+  .then(d => {
+    // Calcula carimbos: cada serviço concluído = 1 carimbo
+    // Usa saldoPontos: 50 pontos por serviço (mínimo)
+    const pontos = d.saldoPontos || 0;
+    const carimbos = Math.min(10, Math.floor(pontos / 50));
+    const ciclo = carimbos % 10;
+    atualizarCarimbos(ciclo, user.nome);
+  })
+  .catch(() => {
+    // Se API falhar, mostra zerado
+    atualizarCarimbos(0, user.nome);
+  });
+}
+
+function atualizarCarimbos(qtd, nome) {
+  const stamps = document.getElementById('fidelStamps');
+  const fill = document.getElementById('fidelFill');
+  const count = document.getElementById('fidelCount');
+  const msg = document.getElementById('fidelMsg');
+  if (!stamps) return;
+
+  const pct = (qtd / 10) * 100;
+  fill.style.width = pct + '%';
+  count.textContent = qtd + ' de 10 manutenções';
+
+  if (qtd === 0) {
+    msg.textContent = `${nome}, comece sua jornada! 🚀`;
+  } else if (qtd < 5) {
+    msg.textContent = `Boa ${nome}! Você está no caminho! 💪`;
+  } else if (qtd < 10) {
+    msg.textContent = `Quase lá ${nome}! Faltam ${10 - qtd} manutenções! 🔥`;
+  } else {
+    msg.innerHTML = `<strong style="color:var(--green)">🎉 PARABÉNS ${nome.toUpperCase()}! Sua próxima mão de obra é GRÁTIS!</strong>`;
+  }
+
+  stamps.innerHTML = '';
+  for (let i = 0; i < 10; i++) {
+    const s = document.createElement('div');
+    s.className = 'stamp' + (i < qtd ? ' done' : '');
+    s.textContent = i < qtd ? '🔧' : (i === 10 ? '🎁' : '○');
+    stamps.appendChild(s);
+  }
+
+  // Carimbo 11 — recompensa
+  const reward = document.createElement('div');
+  reward.className = 'stamp' + (qtd >= 10 ? ' free' : '');
+  reward.style.cssText = 'grid-column:1/-1;width:50px;height:50px;margin:8px auto 0;font-size:24px;';
+  reward.textContent = '🎁';
+  reward.title = '11ª manutenção — mão de obra GRÁTIS!';
+  stamps.appendChild(reward);
+}
+
 </script>
 </body>
 </html>
