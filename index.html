@@ -1732,53 +1732,66 @@ function loginGoogle() {
 }
 
 async function handleGoogleCredential(response) {
-    console.log("GOOGLE RESPONSE:", response);
-    console.log("TOKEN:", response?.credential);
-
-    if (!response?.credential) {
-        alert("Token Google vazio!");
-        return;
-    }
+  console.log('GOOGLE RESPONSE:', response);
   try {
-    // Decodifica o JWT do Google para pegar nome e email
     const payload = JSON.parse(atob(response.credential.split('.')[1]));
-    const { name, email, picture } = payload;
+    const { name, email, picture, sub } = payload;
+    const API = 'https://towertech-backend-production.up.railway.app';
+    const senhaGoogle = `G_${sub}_TT`;
 
-    // Tenta logar — se não tiver conta, cadastra automaticamente
-    let r = await fetch(`${App.CONFIG?.API_BASE || 'https://towertech-backend-production.up.railway.app'}/api/auth/login`, {
+    console.log('TOKEN:', response.credential);
+
+    // Tenta logar primeiro
+    let r = await fetch(`${API}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha: `google_${payload.sub}` })
+      body: JSON.stringify({ email, senha: senhaGoogle })
     });
 
+    // Se não tem conta, cadastra
     if (!r.ok) {
-      // Não tem conta — cadastra automaticamente com dados do Google
-      r = await fetch(`${App.CONFIG?.API_BASE || 'https://towertech-backend-production.up.railway.app'}/api/auth/cadastro`, {
+      r = await fetch(`${API}/api/auth/cadastro`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nome: name,
           email: email,
-          telefone: '00000000000',
-          senha: `google_${payload.sub}`,
-          cpf: '00000000000'
+          telefone: '19000000000',
+          senha: senhaGoogle
         })
       });
     }
 
     const d = await r.json();
+    console.log('API RESPONSE:', d);
+
+    if (!r.ok) {
+      const err = document.getElementById('googleErr');
+      if (err) { err.textContent = d.erro || 'Erro ao entrar. Tente novamente.'; err.classList.add('show'); }
+      return;
+    }
+
     if (d.token) {
       App.state.authToken = d.token;
-      App.state.authUser = { nome: d.nome, consorcioId: d.consorcioId, role: d.role, foto: picture };
+      App.state.authUser = { nome: d.nome, consorcioId: d.consorcioId, role: d.role, foto: picture, email };
       localStorage.setItem('tt_token', d.token);
       localStorage.setItem('tt_user', JSON.stringify(App.state.authUser));
       App.renderNavUser();
       App.closeAuth();
       App.toast(`Bem-vindo, ${d.nome}! ✅`);
       renderFidelidade();
+
+      // Se é primeiro acesso, sugere completar perfil
+      const perfil = JSON.parse(localStorage.getItem('tt_perfil') || '{}');
+      if (!perfil.tel) {
+        setTimeout(() => {
+          App.toast('👤 Complete seu perfil para facilitar o consórcio!', 5000);
+        }, 2000);
+      }
     }
   } catch (e) {
-    App.toast('Erro no login Google. Tente e-mail e senha.');
+    console.error('Google login error:', e);
+    App.toast('Erro no login Google. Tente novamente.');
   }
 }
 
