@@ -1732,38 +1732,23 @@ function loginGoogle() {
 }
 
 async function handleGoogleCredential(response) {
-  console.log('GOOGLE RESPONSE:', response);
   try {
     const payload = JSON.parse(atob(response.credential.split('.')[1]));
     const { name, email, picture, sub } = payload;
     const API = 'https://towertech-backend-production.up.railway.app';
-    const senhaGoogle = `G_${sub}_TT`;
 
-    console.log('TOKEN:', response.credential);
-
-    // Tenta logar primeiro
-    let r = await fetch(`${API}/api/auth/login`, {
+    // Endpoint inteligente — vincula conta existente ou cria nova automaticamente
+    const r = await fetch(`${API}/api/auth/google`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha: senhaGoogle })
+      body: JSON.stringify({
+        nome: name,
+        email: email,
+        senhaGoogle: `G_${sub}_TT`
+      })
     });
 
-    // Se não tem conta, cadastra
-    if (!r.ok) {
-      r = await fetch(`${API}/api/auth/cadastro`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nome: name,
-          email: email,
-          telefone: '19000000000',
-          senha: senhaGoogle
-        })
-      });
-    }
-
     const d = await r.json();
-    console.log('API RESPONSE:', d);
 
     if (!r.ok) {
       const err = document.getElementById('googleErr');
@@ -1780,18 +1765,11 @@ async function handleGoogleCredential(response) {
       App.closeAuth();
       App.toast(`Bem-vindo, ${d.nome}! ✅`);
       renderFidelidade();
-
-      // Se é primeiro acesso, sugere completar perfil
       const perfil = JSON.parse(localStorage.getItem('tt_perfil') || '{}');
-      if (!perfil.tel) {
-        setTimeout(() => {
-          App.toast('👤 Complete seu perfil para facilitar o consórcio!', 5000);
-        }, 2000);
-      }
+      if (!perfil.tel) setTimeout(() => App.toast('👤 Complete seu perfil!', 5000), 2000);
     }
   } catch (e) {
-    console.error('Google login error:', e);
-    App.toast('Erro no login Google. Tente novamente.');
+    App.toast('Erro no login. Tente novamente.');
   }
 }
 
