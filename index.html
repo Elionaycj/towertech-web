@@ -34,9 +34,21 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 .nav-mobile.open{display:flex;}
 .nav-login-btn{font-size:12px;color:var(--text2);background:none;border:1px solid var(--gold-dim);padding:6px 12px;border-radius:4px;cursor:pointer;font-family:'Exo 2',sans-serif;transition:all .2s;white-space:nowrap;}
 .nav-login-btn:hover{border-color:var(--gold);color:var(--gold);}
-.nav-user{display:flex;align-items:center;gap:6px;cursor:pointer;}
+.nav-user{display:flex;align-items:center;gap:6px;cursor:pointer;position:relative;}
 .nav-user-ico{width:28px;height:28px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--bg);}
 .nav-user-name{font-size:11px;color:var(--gold);font-weight:700;}
+/* PERFIL DROPDOWN */
+.user-dropdown{position:absolute;top:38px;right:0;background:var(--bg2);border:1px solid var(--gold-dim);border-radius:var(--radius);min-width:180px;z-index:200;box-shadow:0 8px 32px #00000055;overflow:hidden;}
+.user-dropdown a{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:12px;color:var(--text2);text-decoration:none;cursor:pointer;transition:background .2s;border:none;background:none;width:100%;font-family:'Exo 2',sans-serif;font-weight:500;}
+.user-dropdown a:hover{background:var(--bg3);color:var(--gold);}
+.user-dropdown .sep{height:1px;background:var(--gold-dim);margin:4px 0;}
+/* MODAL PERFIL */
+.perfil-avatar{width:72px;height:72px;border-radius:50%;border:3px solid var(--gold);margin:0 auto 12px;display:block;object-fit:cover;}
+.perfil-avatar-placeholder{width:72px;height:72px;border-radius:50%;border:3px solid var(--gold);margin:0 auto 12px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:var(--bg);}
+.perfil-badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold-dim);border:1px solid var(--gold-mid);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--gold);font-weight:700;margin-bottom:20px;}
+.perfil-section{font-size:10px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--gold-dim);}
+.input-cep-row{display:grid;grid-template-columns:1fr auto;gap:8px;}
+.cep-loading{font-size:11px;color:var(--gold);display:none;align-self:center;}
 .hero{max-width:960px;margin:0 auto;padding:56px 24px 40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
 .hero-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--gold);margin-bottom:10px;}
 .hero h1{font-size:40px;font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:14px;}
@@ -620,6 +632,81 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
   </div>
 </section>
 
+<!-- MODAL PERFIL -->
+<div class="modal-overlay" id="modalPerfil">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <h2>MEU PERFIL</h2>
+      <button class="modal-close" onclick="fecharPerfil()">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Avatar -->
+      <div style="text-align:center;margin-bottom:4px">
+        <div id="perfilAvatar"></div>
+        <div style="font-size:16px;font-weight:900;margin-bottom:4px" id="perfilNomeDisplay"></div>
+        <div id="perfilBadge" class="perfil-badge">🏷️ ID: —</div>
+      </div>
+
+      <!-- Dados pessoais -->
+      <div class="perfil-section">Dados Pessoais</div>
+      <div class="form-grid" style="gap:12px">
+        <div class="fg full"><label>Nome completo</label>
+          <input type="text" id="pNome" placeholder="Seu nome completo"/>
+        </div>
+        <div class="fg"><label>WhatsApp / Celular</label>
+          <input type="tel" id="pTel" placeholder="(19) 99999-9999" inputmode="numeric"/>
+        </div>
+        <div class="fg"><label>CPF</label>
+          <input type="tel" id="pCpf" placeholder="000.000.000-00" inputmode="numeric" oninput="fmtCpf(this)"/>
+        </div>
+        <div class="fg"><label>Data de nascimento</label>
+          <input type="date" id="pNasc"/>
+        </div>
+        <div class="fg"><label>E-mail</label>
+          <input type="email" id="pEmail" placeholder="seu@email.com" readonly style="opacity:.6"/>
+        </div>
+      </div>
+
+      <!-- Endereço -->
+      <div class="perfil-section">Endereço</div>
+      <div class="form-grid" style="gap:12px">
+        <div class="fg full">
+          <label>CEP</label>
+          <div class="input-cep-row">
+            <input type="tel" id="pCep" placeholder="00000-000" inputmode="numeric" oninput="fmtCep(this)" onblur="buscarCep()"/>
+            <button class="btn-gold" style="padding:9px 14px;font-size:12px" onclick="buscarCep()">BUSCAR</button>
+          </div>
+          <span class="cep-loading" id="cepLoading">Buscando endereço...</span>
+        </div>
+        <div class="fg full"><label>Rua / Logradouro</label>
+          <input type="text" id="pRua" placeholder="Rua, Avenida..."/>
+        </div>
+        <div class="fg"><label>Número</label>
+          <input type="text" id="pNum" placeholder="Ex: 123"/>
+        </div>
+        <div class="fg"><label>Complemento</label>
+          <input type="text" id="pComp" placeholder="Apto, Casa..."/>
+        </div>
+        <div class="fg"><label>Bairro</label>
+          <input type="text" id="pBairro" placeholder="Bairro"/>
+        </div>
+        <div class="fg"><label>Cidade</label>
+          <input type="text" id="pCidade" placeholder="Cidade"/>
+        </div>
+        <div class="fg"><label>Estado</label>
+          <input type="text" id="pEstado" placeholder="SP" maxlength="2" style="text-transform:uppercase"/>
+        </div>
+      </div>
+
+      <div class="modal-err" id="perfilErr"></div>
+      <div class="form-foot" style="margin-top:20px">
+        <button class="btn-gold" onclick="salvarPerfil()">💾 SALVAR PERFIL</button>
+        <span class="form-note">Dados usados para emissão de garantia e consórcio</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- SOCIAL BAR -->
 <div class="social-bar">
   <a class="social-btn wa" href="https://wa.me/5519982608656" target="_blank">📱 (19) 98260-8656</a>
@@ -631,41 +718,23 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overf
 
 <!-- MODAL AUTH -->
 <div class="modal-overlay" id="modalAuth">
-  <div class="modal">
+  <div class="modal" style="max-width:380px">
     <div class="modal-header">
-      <h2>ENTRAR / CADASTRAR</h2>
-      <button class="modal-close" onclick="closeAuth()">✕</button>
+      <h2>ACESSAR TOWERTECH.S.</h2>
+      <button class="modal-close" onclick="App.closeAuth()">&#x2715;</button>
     </div>
-    <div class="modal-body">
-      <div class="modal-tabs">
-        <button class="modal-tab active" id="tabLogin" onclick="switchAuth('login')">ENTRAR</button>
-        <button class="modal-tab" id="tabCad" onclick="switchAuth('cadastro')">CRIAR CONTA</button>
-      </div>
-      <div id="formLogin">
-        <button class="btn-google" onclick="loginGoogle()"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> ENTRAR COM GOOGLE</button>
-        <div class="auth-divider">ou entre com e-mail</div>
-        <div class="modal-form">
-          <div class="fg"><label>E-mail</label><input type="email" id="lEmail" placeholder="seu@email.com"/></div>
-          <div class="fg"><label>Senha</label><input type="password" id="lSenha" placeholder="••••••"/></div>
-          <div class="modal-err" id="loginErr"></div>
-          <button class="btn-gold" style="width:100%" onclick="doLogin()">ENTRAR</button>
-        </div>
-        <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--text3)">Não tem conta? <span style="color:var(--gold);cursor:pointer" onclick="switchAuth('cadastro')">Cadastre-se grátis</span></p>
-      </div>
-      <div id="formCad" style="display:none">
-        <button class="btn-google" onclick="loginGoogle()"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> CADASTRAR COM GOOGLE</button>
-        <div class="auth-divider">ou crie com e-mail</div>
-        <div class="modal-form">
-          <div class="fg"><label>Nome completo</label><input type="text" id="cNome" placeholder="Seu nome"/></div>
-          <div class="fg"><label>E-mail</label><input type="email" id="cEmail" placeholder="seu@email.com"/></div>
-          <div class="fg"><label>Celular</label><input type="tel" id="cTel" placeholder="(19) 99999-9999" inputmode="numeric"/></div>
-          <div class="fg"><label>CPF </label><input type="tel" id="cCpf" placeholder="000.000.000-00" inputmode="numeric"/></div>
-          <div class="fg"><label>Senha</label><input type="password" id="cSenha" placeholder="Mínimo 6 caracteres"/></div>
-          <div class="modal-err" id="cadErr"></div>
-          <button class="btn-gold" style="width:100%" onclick="doCadastro()">CRIAR CONTA</button>
-        </div>
-        <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--text3)">Já tem conta? <span style="color:var(--gold);cursor:pointer" onclick="switchAuth('login')">Entrar</span></p>
-      </div>
+    <div class="modal-body" style="text-align:center;padding:32px 24px;">
+      <div style="font-size:48px;margin-bottom:16px;">&#x1F5FC;</div>
+      <h3 style="font-size:16px;font-weight:900;margin-bottom:8px;">Bem-vindo!</h3>
+      <p style="font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:24px;">
+        Entre com sua conta Google para acessar o cons&#xF3;rcio, acompanhar seus carimbos de fidelidade e rastrear seus servi&#xE7;os.
+      </p>
+      <div id="googleBtnContainer" style="display:flex;justify-content:center;margin-bottom:16px;min-height:44px;"></div>
+      <div class="modal-err" id="googleErr"></div>
+      <p style="font-size:10px;color:var(--text4);margin-top:16px;line-height:1.6;">
+        &#x1F512; Login seguro via Google. N&#xE3;o armazenamos sua senha.<br>
+        Sua primeira entrada cria a conta automaticamente.
+      </p>
     </div>
   </div>
 </div>
@@ -824,9 +893,16 @@ const App = {
         ? `<img src="${foto}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)"/>`
         : `<div class="nav-user-ico">${this.state.authUser.nome[0].toUpperCase()}</div>`;
       el.innerHTML = `
-        <div class="nav-user" onclick="App.logout()">
+        <div class="nav-user" id="navUserBtn" onclick="toggleUserDropdown(event)">
           ${ico}
-          <span class="nav-user-name">${this.state.authUser.nome.split(' ')[0]} ↩</span>
+          <span class="nav-user-name">${this.state.authUser.nome.split(' ')[0]} ▾</span>
+          <div class="user-dropdown" id="userDropdown" style="display:none">
+            <a onclick="abrirPerfil()">👤 Meu Perfil</a>
+            <a onclick="App.go('fidelidade')">🏆 Fidelidade</a>
+            <a onclick="App.go('rastreamento')">🔍 Rastrear OS</a>
+            <div class="sep"></div>
+            <a onclick="App.logout()" style="color:var(--red)">↩ Sair</a>
+          </div>
         </div>`;
     } else {
       el.innerHTML = '<button class="nav-login-btn" onclick="App.openAuth(\'login\')">ENTRAR</button>';
@@ -836,7 +912,23 @@ const App = {
 
   openAuth(tab = 'login') {
     document.getElementById('modalAuth').classList.add('open');
-    this.switchAuth(tab);
+    // Re-renderiza botão Google toda vez que abre (garante que aparece)
+    setTimeout(() => {
+      if (typeof google !== 'undefined') {
+        const container = document.getElementById('googleBtnContainer');
+        if (container) {
+          container.innerHTML = '';
+          google.accounts.id.renderButton(container, {
+            theme: 'outline',
+            size: 'large',
+            text: 'signin_with',
+            shape: 'rectangular',
+            logo_alignment: 'left',
+            width: 280
+          });
+        }
+      }
+    }, 100);
   },
 
   closeAuth() {
@@ -1458,10 +1550,148 @@ window.abrirCheckout = App.abrirCheckout.bind(App);
 window.buscarProduto = App.buscarProduto.bind(App);
 window.loginGoogle = loginGoogle;
 
+// ── DROPDOWN DO USUÁRIO ──
+function toggleUserDropdown(e) {
+  e.stopPropagation();
+  const dd = document.getElementById('userDropdown');
+  if (dd) dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+}
+document.addEventListener('click', () => {
+  const dd = document.getElementById('userDropdown');
+  if (dd) dd.style.display = 'none';
+});
+
+// ── PERFIL ──
+function abrirPerfil() {
+  const dd = document.getElementById('userDropdown');
+  if (dd) dd.style.display = 'none';
+
+  const user = App.state.authUser;
+  if (!user) return;
+
+  // Preenche dados do Google
+  document.getElementById('pNome').value = user.nome || '';
+  document.getElementById('pEmail').value = user.email || '';
+
+  // Avatar
+  const av = document.getElementById('perfilAvatar');
+  if (user.foto) {
+    av.innerHTML = `<img src="${user.foto}" class="perfil-avatar"/>`;
+  } else {
+    av.innerHTML = `<div class="perfil-avatar-placeholder">${user.nome[0].toUpperCase()}</div>`;
+  }
+  document.getElementById('perfilNomeDisplay').textContent = user.nome;
+  document.getElementById('perfilBadge').textContent = `🏷️ ID: ${user.consorcioId || '—'}`;
+
+  // Carrega dados salvos do localStorage
+  const extra = JSON.parse(localStorage.getItem('tt_perfil') || '{}');
+  document.getElementById('pTel').value = extra.tel || '';
+  document.getElementById('pCpf').value = extra.cpf || '';
+  document.getElementById('pNasc').value = extra.nasc || '';
+  document.getElementById('pCep').value = extra.cep || '';
+  document.getElementById('pRua').value = extra.rua || '';
+  document.getElementById('pNum').value = extra.num || '';
+  document.getElementById('pComp').value = extra.comp || '';
+  document.getElementById('pBairro').value = extra.bairro || '';
+  document.getElementById('pCidade').value = extra.cidade || '';
+  document.getElementById('pEstado').value = extra.estado || '';
+
+  document.getElementById('modalPerfil').classList.add('open');
+}
+
+function fecharPerfil() {
+  document.getElementById('modalPerfil').classList.remove('open');
+}
+
+function salvarPerfil() {
+  const nome = document.getElementById('pNome').value.trim();
+  const err = document.getElementById('perfilErr');
+
+  if (!nome) {
+    err.textContent = 'Nome completo é obrigatório.';
+    err.classList.add('show');
+    return;
+  }
+  err.classList.remove('show');
+
+  // Salva dados extras no localStorage
+  const extra = {
+    tel:    document.getElementById('pTel').value.trim(),
+    cpf:    document.getElementById('pCpf').value.trim(),
+    nasc:   document.getElementById('pNasc').value,
+    cep:    document.getElementById('pCep').value.trim(),
+    rua:    document.getElementById('pRua').value.trim(),
+    num:    document.getElementById('pNum').value.trim(),
+    comp:   document.getElementById('pComp').value.trim(),
+    bairro: document.getElementById('pBairro').value.trim(),
+    cidade: document.getElementById('pCidade').value.trim(),
+    estado: document.getElementById('pEstado').value.trim()
+  };
+  localStorage.setItem('tt_perfil', JSON.stringify(extra));
+
+  // Atualiza nome no authUser
+  if (App.state.authUser) {
+    App.state.authUser.nome = nome;
+    localStorage.setItem('tt_user', JSON.stringify(App.state.authUser));
+    App.renderNavUser();
+  }
+
+  fecharPerfil();
+  App.toast('✅ Perfil salvo com sucesso!');
+}
+
+// ── CEP ──
+async function buscarCep() {
+  const cep = document.getElementById('pCep').value.replace(/\D/g, '');
+  if (cep.length !== 8) return;
+
+  const loading = document.getElementById('cepLoading');
+  loading.style.display = 'block';
+
+  try {
+    const r = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const d = await r.json();
+
+    if (d.erro) {
+      App.toast('CEP não encontrado. Verifique e tente novamente.');
+      loading.style.display = 'none';
+      return;
+    }
+
+    document.getElementById('pRua').value    = d.logradouro || '';
+    document.getElementById('pBairro').value = d.bairro     || '';
+    document.getElementById('pCidade').value = d.localidade || '';
+    document.getElementById('pEstado').value = d.uf         || '';
+    document.getElementById('pNum').focus();
+    App.toast('📍 Endereço encontrado!');
+  } catch (e) {
+    App.toast('Erro ao buscar CEP. Preencha manualmente.');
+  }
+  loading.style.display = 'none';
+}
+
+function fmtCpf(el) {
+  let v = el.value.replace(/\D/g, '').substring(0, 11);
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  el.value = v;
+}
+
+function fmtCep(el) {
+  let v = el.value.replace(/\D/g, '').substring(0, 8);
+  if (v.length > 5) v = v.replace(/(\d{5})(\d)/, '$1-$2');
+  el.value = v;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   App.init();
   initGoogleLogin();
   renderFidelidade();
+  // Fecha perfil clicando fora
+  document.getElementById('modalPerfil').addEventListener('click', function(e) {
+    if (e.target === this) fecharPerfil();
+  });
 });
 
 // ══════════════════════════════════════════
@@ -1470,30 +1700,35 @@ document.addEventListener('DOMContentLoaded', () => {
 const GOOGLE_CLIENT_ID = '780840580508-pt28s41n9aig1leh95ui0oqthtnj42ra.apps.googleusercontent.com';
 
 function initGoogleLogin() {
-  if (typeof google === 'undefined') return;
+  if (typeof google === 'undefined') {
+    // SDK ainda carregando — tenta de novo em 1s
+    setTimeout(initGoogleLogin, 1000);
+    return;
+  }
   google.accounts.id.initialize({
     client_id: GOOGLE_CLIENT_ID,
     callback: handleGoogleCredential,
     auto_select: false,
-    cancel_on_tap_outside: true
+    cancel_on_tap_outside: true,
+    ux_mode: 'popup'
   });
+  // Renderiza botão oficial do Google no container
+  const container = document.getElementById('googleBtnContainer');
+  if (container) {
+    google.accounts.id.renderButton(container, {
+      theme: 'outline',
+      size: 'large',
+      text: 'signin_with',
+      shape: 'rectangular',
+      logo_alignment: 'left',
+      width: 280
+    });
+  }
 }
 
 function loginGoogle() {
-  if (typeof google === 'undefined') {
-    App.toast('Google Login indisponível. Use e-mail e senha.');
-    return;
-  }
-  google.accounts.id.prompt((notification) => {
-    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-      // Fallback: abre popup manual
-      google.accounts.id.renderButton(
-        document.createElement('div'),
-        { theme: 'outline', size: 'large' }
-      );
-      App.toast('Use o popup do Google que apareceu.');
-    }
-  });
+  // Função mantida para compatibilidade, o botão oficial já dispara o flow
+  App.openAuth('login');
 }
 
 async function handleGoogleCredential(response) {
