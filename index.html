@@ -1732,6 +1732,16 @@ function loginGoogle() {
 }
 
 async function handleGoogleCredential(response) {
+    console.log("GOOGLE RESPONSE:", response);
+    console.log("TOKEN:", response?.credential);
+
+    if (!response?.credential) {
+        alert("Token Google vazio!");
+        return;
+    }
+
+    // resto do seu código continua aqui
+} 
   try {
     // Decodifica o JWT do Google para pegar nome e email
     const payload = JSON.parse(atob(response.credential.split('.')[1]));
